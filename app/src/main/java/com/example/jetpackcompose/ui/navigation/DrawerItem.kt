@@ -1,4 +1,4 @@
-package com.example.jetpackcompose.navigation
+package com.example.jetpackcompose.ui.navigation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -17,7 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.jetpackcompose.R
-import com.example.jetpackcompose.model.NavDrawerItem
+import com.example.jetpackcompose.data.model.NavDrawerItem
 @Composable
 fun DrawerItem(item: NavDrawerItem, selected: Boolean, onItemClick: (NavDrawerItem) -> Unit) {
     val background = if (selected) R.color.light_grey else android.R.color.transparent

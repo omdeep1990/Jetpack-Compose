@@ -1,4 +1,4 @@
-package com.example.jetpackcompose.screens
+package com.example.jetpackcompose.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -14,29 +14,32 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import com.example.jetpackcompose.MainActivityLayout
 import com.example.jetpackcompose.R
+import com.example.jetpackcompose.ui.viewModel.ApiViewModel
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(viewModel : ApiViewModel, isLoading : Boolean) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(colorResource(id = R.color.light_blue))
             .wrapContentSize(Alignment.Center)
     ) {
-        Text(
-            text = "Home View",
-            fontWeight = FontWeight.Bold,
-            color = Color.White,
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            textAlign = TextAlign.Center,
-            fontSize = 25.sp
-        )
+//        Text(
+//            text = "Home View",
+//            fontWeight = FontWeight.Bold,
+//            color = Color.White,
+//            modifier = Modifier.align(Alignment.CenterHorizontally),
+//            textAlign = TextAlign.Center,
+//            fontSize = 25.sp
+//        )
+        MainActivityLayout(viewModel = viewModel, isLoading = isLoading)
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen()
+//    HomeScreen()
 }

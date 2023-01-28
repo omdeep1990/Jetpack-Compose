@@ -1,17 +1,18 @@
-package com.example.jetpackcompose.navigation
+package com.example.jetpackcompose.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.jetpackcompose.model.NavDrawerItem
-import com.example.jetpackcompose.screens.*
+import com.example.jetpackcompose.data.model.NavDrawerItem
+import com.example.jetpackcompose.ui.screens.*
+import com.example.jetpackcompose.ui.viewModel.ApiViewModel
 
 @Composable
-fun Navigation(navController: NavHostController) {
+fun Navigation(navController: NavHostController, viewModel : ApiViewModel, isLoading : Boolean) {
     NavHost(navController, startDestination = NavDrawerItem.Home.route) {
         composable(NavDrawerItem.Home.route) {
-            HomeScreen()
+            HomeScreen(viewModel, isLoading)
         }
         composable(NavDrawerItem.Profile.route) {
             ProfileScreen()

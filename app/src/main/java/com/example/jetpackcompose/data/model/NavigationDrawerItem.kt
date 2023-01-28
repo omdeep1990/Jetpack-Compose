@@ -1,4 +1,4 @@
-package com.example.jetpackcompose.model
+package com.example.jetpackcompose.data.model
 
 import com.example.jetpackcompose.R
 import com.example.jetpackcompose.utils.Constants.ABOUT

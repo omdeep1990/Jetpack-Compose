@@ -1,4 +1,4 @@
-package com.example.jetpackcompose.navigation
+package com.example.jetpackcompose.ui.navigation
 
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons

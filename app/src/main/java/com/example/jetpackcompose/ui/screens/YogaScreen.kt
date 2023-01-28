@@ -1,4 +1,4 @@
-package com.example.jetpackcompose.screens
+package com.example.jetpackcompose.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.sp
 import com.example.jetpackcompose.R
 
 @Composable
-fun AboutScreen() {
+fun YogaScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -25,7 +25,7 @@ fun AboutScreen() {
             .wrapContentSize(Alignment.Center)
     ) {
         Text(
-            text = "Profile View",
+            text = "Books View",
             fontWeight = FontWeight.Bold,
             color = Color.White,
             modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -37,6 +37,6 @@ fun AboutScreen() {
 
 @Preview(showBackground = true)
 @Composable
-fun ProfileScreenPreview() {
-    AboutScreen()
+fun BooksScreenPreview() {
+    YogaScreen()
 }

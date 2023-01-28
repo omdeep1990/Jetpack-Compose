@@ -1,4 +1,4 @@
-package com.example.jetpackcompose.navigation
+package com.example.jetpackcompose.ui.navigation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -20,7 +20,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.jetpackcompose.R
-import com.example.jetpackcompose.model.NavDrawerItem
+import com.example.jetpackcompose.data.model.NavDrawerItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
