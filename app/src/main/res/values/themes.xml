@@ -4,4 +4,8 @@
     <style name="Theme.JetpackCompose" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:statusBarColor">@color/blue</item>
     </style>
+
+    <style name="Theme.MyTheme" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/teal_green</item>
+    </style>
 </resources>

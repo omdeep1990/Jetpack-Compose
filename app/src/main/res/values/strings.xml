@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Jetpack Compose</string>
+    <string name="title_activity_tabs">TabsActivity</string>
+    <string name="whatsapp">WhatsApp</string>
 </resources>
