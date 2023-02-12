@@ -5,12 +5,14 @@ import androidx.compose.runtime.remember
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.auth.FirebaseAuth
 import com.omdeep.jetpackcompose.ui.activity.ui.theme.JetpackComposeTheme
 import com.omdeep.jetpackcompose.ui.navigation.Action
 import com.omdeep.jetpackcompose.ui.navigation.Destination.AuthenticationOption
 import com.omdeep.jetpackcompose.ui.navigation.Destination.Home
 import com.omdeep.jetpackcompose.ui.navigation.Destination.Login
 import com.omdeep.jetpackcompose.ui.navigation.Destination.Register
+import com.omdeep.jetpackcompose.ui.navigation.Destination.Users
 
 /**
  * The main Navigation composable which will handle all the navigation stack.
@@ -24,9 +26,9 @@ fun NavComposeApp() {
         NavHost(
             navController = navController,
             startDestination =
-//            if (FirebaseAuth.getInstance().currentUser != null)
-//                Home
-//            else
+            if (FirebaseAuth.getInstance().currentUser != null)
+                Home
+            else
                 AuthenticationOption
         ) {
             composable(AuthenticationOption) {
@@ -48,8 +50,14 @@ fun NavComposeApp() {
                 )
             }
             composable(Home) {
-                TabsMainScreen()
+                TabsMainScreen(navController)
             }
+            composable(Users) {
+                UsersListScreen(
+                    home = actions.home
+                )
+            }
+
         }
     }
 }

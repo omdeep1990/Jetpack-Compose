@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "409358958129",
+    "project_id": "whatsapp-clone-jetpack-compose",
+    "storage_bucket": "whatsapp-clone-jetpack-compose.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:409358958129:android:9e9eb0f86987d366571f10",
+        "android_client_info": {
+          "package_name": "com.omdeep.jetpackcompose"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "409358958129-dqa5ltjb54fqnt1crosv94b10bk72b3r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.omdeep.jetpackcompose",
+            "certificate_hash": "247458220f649ac96bcdd4679470d79ebc3571d0"
+          }
+        },
+        {
+          "client_id": "409358958129-g6pp8ri2agvq98pdlvcfavm1lang6t20.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdGljkG3wQqqM9C3JIztdviJ_PuD7UuW4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "409358958129-g6pp8ri2agvq98pdlvcfavm1lang6t20.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

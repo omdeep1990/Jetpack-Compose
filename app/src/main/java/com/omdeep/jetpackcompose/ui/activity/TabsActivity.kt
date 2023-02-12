@@ -34,6 +34,6 @@ class TabsActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview2() {
     JetpackComposeTheme {
-//        TabsMainScreen()
+        NavComposeApp()
     }
 }

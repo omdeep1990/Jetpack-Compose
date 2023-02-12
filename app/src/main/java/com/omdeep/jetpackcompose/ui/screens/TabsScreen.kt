@@ -19,6 +19,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.omdeep.jetpackcompose.R
 import com.google.accompanist.pager.*
 import com.omdeep.jetpackcompose.data.model.tabItem.TabItem
@@ -26,6 +28,7 @@ import com.omdeep.jetpackcompose.data.model.tabItem.TabItem.Calls
 import com.omdeep.jetpackcompose.data.model.tabItem.TabItem.Chats
 import com.omdeep.jetpackcompose.data.model.tabItem.TabItem.Status
 import com.omdeep.jetpackcompose.data.model.tabItem.TabItem.Community
+import com.omdeep.jetpackcompose.ui.navigation.Destination.Users
 
 import kotlinx.coroutines.launch
 
@@ -62,15 +65,19 @@ fun TopBarWithDropDownMenu() {
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun TabsMainScreen() {
+fun TabsMainScreen(navController: NavController) {
     val tabs = listOf(Community, Chats, Status, Calls)
     val pagerState = rememberPagerState()
     Scaffold(
         topBar = { TopBarWithDropDownMenu() },
         floatingActionButtonPosition = FabPosition.End,
-        floatingActionButton = { FloatingActionButton(onClick = {}){
+        floatingActionButton = { FloatingActionButton(onClick = {
+            navController.navigate(Users)
+        }){
             Icon(painter = painterResource(id = R.drawable.chats), contentDescription = "Fab Description",
-            modifier = Modifier.height(30.dp).width(30.dp))
+            modifier = Modifier
+                .height(30.dp)
+                .width(30.dp))
         } },
     ) { padding ->
         Column(modifier = Modifier.padding(padding)) {

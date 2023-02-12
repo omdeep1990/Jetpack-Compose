@@ -4,6 +4,7 @@ import androidx.navigation.NavHostController
 import com.omdeep.jetpackcompose.ui.navigation.Destination.Home
 import com.omdeep.jetpackcompose.ui.navigation.Destination.Login
 import com.omdeep.jetpackcompose.ui.navigation.Destination.Register
+import com.omdeep.jetpackcompose.ui.navigation.Destination.Users
 
 /**
  * A set of destination used in the whole application
@@ -13,6 +14,7 @@ object Destination {
     const val Register = "register"
     const val Login = "login"
     const val Home = "home"
+    const val Users = "users"
 }
 
 class Action(navController: NavHostController) {
@@ -24,9 +26,13 @@ class Action(navController: NavHostController) {
             popUpTo(Register) {
                 inclusive = true
             }
+            popUpTo(Users) {
+                inclusive = true
+            }
         }
     }
     val login: () -> Unit = { navController.navigate(Login) }
     val register: () -> Unit = { navController.navigate(Register) }
     val navigateBack: () -> Unit = { navController.popBackStack() }
+//    val users: () -> Unit = { navController.navigate(Users) }
 }
