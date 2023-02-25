@@ -1,6 +1,7 @@
 package com.omdeep.jetpackcompose.ui.navigation
 
 import androidx.navigation.NavHostController
+import com.omdeep.jetpackcompose.ui.navigation.Destination.CameraXScreen
 import com.omdeep.jetpackcompose.ui.navigation.Destination.Home
 import com.omdeep.jetpackcompose.ui.navigation.Destination.Login
 import com.omdeep.jetpackcompose.ui.navigation.Destination.Register
@@ -15,6 +16,7 @@ object Destination {
     const val Login = "login"
     const val Home = "home"
     const val Users = "users"
+    const val CameraXScreen = "camera"
 }
 
 class Action(navController: NavHostController) {
@@ -27,6 +29,9 @@ class Action(navController: NavHostController) {
                 inclusive = true
             }
             popUpTo(Users) {
+                inclusive = true
+            }
+            popUpTo(CameraXScreen) {
                 inclusive = true
             }
         }

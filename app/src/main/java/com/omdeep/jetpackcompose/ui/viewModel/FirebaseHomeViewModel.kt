@@ -2,6 +2,7 @@ package com.omdeep.jetpackcompose.ui.viewModel
 
 import android.content.Context
 import android.widget.Toast
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,12 +15,10 @@ import com.omdeep.jetpackcompose.data.model.FirebaseUser
 class FirebaseHomeViewModel : ViewModel() {
     private val auth: FirebaseAuth = Firebase.auth
     private var dbRef : DatabaseReference = FirebaseDatabase.getInstance().reference
-    var totalUsers: ArrayList<FirebaseUser> = ArrayList()
-    var usersListData = MutableLiveData<List<FirebaseUser>>()
+    var totalUsers = mutableStateListOf<FirebaseUser>()
+    var usersListData : List<FirebaseUser> = totalUsers
 
-//    var usersListData : MutableLiveData<ArrayList<FirebaseUser>> = MutableLiveData<ArrayList<FirebaseUser>>()
-
-    fun usersList(context: Context) : LiveData<List<FirebaseUser>> {
+    fun usersList(context: Context) {
         dbRef.child("user").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 totalUsers.clear()
@@ -31,13 +30,10 @@ class FirebaseHomeViewModel : ViewModel() {
                         }
                     }
                 }
-                usersListData.value = totalUsers
             }
-
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(context, "Data retrieving failed.", Toast.LENGTH_SHORT).show()
             }
         })
-        return usersListData
     }
 }

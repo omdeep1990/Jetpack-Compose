@@ -6,17 +6,14 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.omdeep.jetpackcompose.data.camerax.CameraX
+import com.omdeep.jetpackcompose.ui.screens.roomScreens.ScreenMain
 import com.omdeep.jetpackcompose.ui.theme.JetpackComposeTheme
-import com.omdeep.jetpackcompose.ui.screens.NavComposeApp
-import com.omdeep.jetpackcompose.utils.Constants.IMAGE_PATH
-import com.omdeep.jetpackcompose.utils.Constants.JPG_EXT
 
-class TabsActivity : ComponentActivity() {
-    private var cameraX: CameraX = CameraX(this, this)
+class LoginSignUpActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -26,26 +23,22 @@ class TabsActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    intent.apply {
-                        val imagePath = getStringExtra(IMAGE_PATH)
-                        if (imagePath != null) {
-                            if (imagePath.contains(JPG_EXT)) {
-                                NavComposeApp(imagePath.removePrefix(JPG_EXT))
-                            }
-                        } else {
-                            NavComposeApp("")
-                        }
-                    }
+                    ScreenMain()
                 }
             }
         }
     }
 }
 
+@Composable
+fun Greeting2(name: String) {
+    ScreenMain()
+}
+
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview2() {
+fun DefaultPreview4() {
     JetpackComposeTheme {
-//        NavComposeApp()
+        Greeting2("Android")
     }
 }

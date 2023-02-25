@@ -5,30 +5,32 @@ import androidx.compose.runtime.remember
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.google.firebase.auth.FirebaseAuth
-import com.omdeep.jetpackcompose.ui.activity.ui.theme.JetpackComposeTheme
+import com.omdeep.jetpackcompose.ui.theme.JetpackComposeTheme
 import com.omdeep.jetpackcompose.ui.navigation.Action
 import com.omdeep.jetpackcompose.ui.navigation.Destination.AuthenticationOption
 import com.omdeep.jetpackcompose.ui.navigation.Destination.Home
 import com.omdeep.jetpackcompose.ui.navigation.Destination.Login
 import com.omdeep.jetpackcompose.ui.navigation.Destination.Register
 import com.omdeep.jetpackcompose.ui.navigation.Destination.Users
+import com.omdeep.jetpackcompose.ui.screens.firebase.AuthenticationView
+import com.omdeep.jetpackcompose.ui.screens.firebase.LoginScreen
+import com.omdeep.jetpackcompose.ui.screens.firebase.RegisterScreen
+import com.omdeep.jetpackcompose.ui.screens.firebase.UsersListScreen
 
 /**
  * The main Navigation composable which will handle all the navigation stack.
  */
-
 @Composable
-fun NavComposeApp() {
+fun NavComposeApp(imagePath : String?) {
     val navController = rememberNavController()
     val actions = remember(navController) { Action(navController) }
     JetpackComposeTheme {
         NavHost(
             navController = navController,
             startDestination =
-            if (FirebaseAuth.getInstance().currentUser != null)
-                Home
-            else
+//            if (FirebaseAuth.getInstance().currentUser != null)
+//                Home
+//            else
                 AuthenticationOption
         ) {
             composable(AuthenticationOption) {
@@ -39,6 +41,7 @@ fun NavComposeApp() {
             }
             composable(Register) {
                 RegisterScreen(
+                    imagePath = imagePath,
                     home = actions.home,
                     back = actions.navigateBack
                 )
@@ -57,7 +60,6 @@ fun NavComposeApp() {
                     home = actions.home
                 )
             }
-
         }
     }
 }

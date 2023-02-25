@@ -2,4 +2,6 @@
     <string name="app_name">Jetpack Compose</string>
     <string name="title_activity_tabs">TabsActivity</string>
     <string name="whatsapp">WhatsApp</string>
+    <string name="title_activity_camera_xactivity">CameraXActivity</string>
+    <string name="title_activity_login_sign_up">LoginSignUpActivity</string>
 </resources>

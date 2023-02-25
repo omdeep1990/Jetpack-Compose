@@ -11,4 +11,5 @@
     <color name="light_grey">#C1C3C5</color>
     <color name="blue">#FF0000FF</color>
     <color name="teal_green">#128C7E</color>
+    <color name="message">#75D1FA</color>
 </resources>

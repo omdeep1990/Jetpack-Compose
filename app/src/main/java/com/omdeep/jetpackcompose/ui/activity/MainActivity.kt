@@ -18,8 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.omdeep.jetpackcompose.ui.activity.ui.theme.JetpackComposeTheme
-import com.omdeep.jetpackcompose.ui.screens.MainList
+import com.omdeep.jetpackcompose.ui.theme.JetpackComposeTheme
+import com.omdeep.jetpackcompose.ui.screens.api.MainList
 import com.omdeep.jetpackcompose.ui.screens.MainScreen
 import com.omdeep.jetpackcompose.ui.viewModel.ApiViewModel
 import com.omdeep.jetpackcompose.utils.Status

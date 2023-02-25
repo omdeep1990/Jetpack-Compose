@@ -2,10 +2,10 @@ package com.omdeep.jetpackcompose.data.model.tabItem
 
 import androidx.compose.runtime.Composable
 import com.omdeep.jetpackcompose.R
-import com.omdeep.jetpackcompose.ui.screens.CallScreen
-import com.omdeep.jetpackcompose.ui.screens.ChatScreen
-import com.omdeep.jetpackcompose.ui.screens.CommunityScreen
-import com.omdeep.jetpackcompose.ui.screens.StatusScreen
+import com.omdeep.jetpackcompose.ui.screens.tabs.CallScreen
+import com.omdeep.jetpackcompose.ui.screens.tabs.ChatScreen
+import com.omdeep.jetpackcompose.ui.screens.tabs.CommunityScreen
+import com.omdeep.jetpackcompose.ui.screens.tabs.StatusScreen
 
 typealias ComposableFun = @Composable () -> Unit
 

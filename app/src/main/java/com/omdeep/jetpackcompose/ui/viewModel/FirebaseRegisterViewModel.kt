@@ -65,7 +65,7 @@ class FirebaseRegisterViewModel : ViewModel() {
     }
 
     // Register user
-    fun registerUser(home: () -> Unit) {
+    fun registerUser(home: () -> Unit/*, imagePath: String*/) {
         if (_loading.value == false) {
             val name: String = _name.value ?: throw IllegalArgumentException("name expected")
             val mobileNo: String = _mobileNo.value ?: throw IllegalArgumentException("mobile no expected")
@@ -77,7 +77,7 @@ class FirebaseRegisterViewModel : ViewModel() {
             auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener {
                     if (it.isSuccessful) {
-                        addUserInformationToDatabase(name, mobileNo, email, auth.currentUser!!.uid)
+                        addUserInformationToDatabase(name, mobileNo, email, /*imagePath,*/ auth.currentUser!!.uid)
                         home()
                     }
                     _loading.value = false
@@ -85,7 +85,7 @@ class FirebaseRegisterViewModel : ViewModel() {
         }
     }
 
-    private fun addUserInformationToDatabase(name : String, mobileNo : String, email : String, uid : String) {
-        dbRef.child("user").child(uid).setValue(FirebaseUser(name, mobileNo, email, null, uid))
+    private fun addUserInformationToDatabase(name : String, mobileNo : String, email : String/*, imagePath : String*/, uid : String) {
+        dbRef.child("user").child(uid).setValue(FirebaseUser(name, mobileNo, email/*, imagePath*/, uid))
     }
 }

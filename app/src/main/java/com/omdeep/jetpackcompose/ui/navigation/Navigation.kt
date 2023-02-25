@@ -5,7 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.omdeep.jetpackcompose.data.model.NavDrawerItem
-import com.omdeep.jetpackcompose.ui.screens.*
+import com.omdeep.jetpackcompose.ui.screens.navBtmTabs.*
 import com.omdeep.jetpackcompose.ui.viewModel.ApiViewModel
 
 @Composable
