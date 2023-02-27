@@ -5,5 +5,10 @@ data class ErrorMessage(
     var email : String = "",
     var password : String = "",
     var image : String = "",
-    var confirmPassword : String = ""
+    var confirmPassword : String = "",
+    var selectedDate : String = "",
+    var selectedTime : String = "",
+    var earningsType : String = "",
+    var amount : String = "",
+    var note : String = ""
 )

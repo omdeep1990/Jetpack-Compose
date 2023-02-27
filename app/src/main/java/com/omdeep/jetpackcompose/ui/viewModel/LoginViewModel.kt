@@ -6,26 +6,26 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.omdeep.jetpackcompose.data.repository.UserRepository
-import com.omdeep.jetpackcompose.data.room.User
+import com.omdeep.jetpackcompose.data.room.loginSignUp.User
 import com.omdeep.jetpackcompose.utils.ErrorMessage
 import com.omdeep.jetpackcompose.utils.Valid
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.Dispatcher
 
 class LoginViewModel(private val repository: UserRepository) : ViewModel() {
-    var reqUser: ErrorMessage = ErrorMessage()
+    private var reqUser: ErrorMessage = ErrorMessage()
     var userLiveData: MutableLiveData<User> = MutableLiveData()
 
     var email: MutableState<String> = mutableStateOf(reqUser.email)
-    var isEmailValid: MutableState<Boolean> = mutableStateOf(false)
     var emailErrMsg: MutableState<String> = mutableStateOf("")
 
 
     var password: MutableState<String> = mutableStateOf(reqUser.password)
-    var isPasswordValid: MutableState<Boolean> = mutableStateOf(false)
     var passwordErrMsg: MutableState<String> = mutableStateOf("")
+
+    var isEnabled: MutableState<Boolean> = mutableStateOf(false)
+
 
     private fun getUser(email: String, password: String) {
         viewModelScope.launch {
@@ -41,19 +41,15 @@ class LoginViewModel(private val repository: UserRepository) : ViewModel() {
         val isValidEmail = Valid.isValidEmail(email.value)
         val isValidPassword = Valid.isValidPassword(password.value)
         if (!isValidEmail) {
-            isEmailValid.value = true
             emailErrMsg.value = "Input proper email id"
 
         } else {
-            isEmailValid.value = false
             emailErrMsg.value = ""
         }
         if (!isValidPassword) {
-            isPasswordValid.value = true
             passwordErrMsg.value = "Password must be strong."
 
         } else {
-            isPasswordValid.value = false
             passwordErrMsg.value = ""
         }
         return isValidEmail && isValidPassword
@@ -73,4 +69,42 @@ class LoginViewModel(private val repository: UserRepository) : ViewModel() {
         email.value = ""
         password.value = ""
     }
+
+    //TODO: Below are the methods to to validate the textfields on realtime basis: -
+    //TODO: 1. Validate Email onValueChange by putting this method in onValueChange: -
+    fun validateEmail(): Boolean {
+        val isValidEmail = Valid.isValidEmail(email.value)
+        if (!isValidEmail) {
+            emailErrMsg.value = "Input proper email id"
+        } else {
+            emailErrMsg.value = ""
+        }
+        return isValidEmail
+    }
+
+    //TODO: 2. Validate Password onValueChange by putting this method in onValueChange: -
+
+    fun validatePassword(): Boolean {
+        val isValidPassword = Valid.isValidPassword(password.value)
+        if (!isValidPassword) {
+            passwordErrMsg.value = "Password must be strong."
+        } else {
+            passwordErrMsg.value = ""
+        }
+        return isValidPassword
+    }
+
+    //TODO: 3. Button should be enabled or not, put isEnabled in enabled = isEnabled.value in button and initialize shouldEnabled(): -
+    fun shouldEnabled(): Boolean {
+        isEnabled.value = validateEmail() && validatePassword()
+        return isEnabled.value
+    }
+
+    //TODO: 4. Login: -
+    fun newLogin() {
+        reqUser.email = email.value
+        reqUser.password = password.value
+        getUser(email.value, password.value)
+    }
+
 }

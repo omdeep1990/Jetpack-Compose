@@ -1,4 +1,4 @@
-package com.omdeep.jetpackcompose.data.room
+package com.omdeep.jetpackcompose.data.room.loginSignUp
 
 import android.content.Context
 import androidx.room.*
@@ -6,9 +6,7 @@ import com.omdeep.jetpackcompose.utils.Constants.ROOM_DATABASE
 
 @Database(entities = [User::class], version = 1)
 abstract class UserDatabase : RoomDatabase() {
-
     abstract val dao: UserDao
-
     companion object {
         @Volatile
         private var INSTANCE: UserDatabase? = null

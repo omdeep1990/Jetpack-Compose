@@ -21,6 +21,17 @@
         android:theme="@style/Theme.JetpackCompose"
         tools:targetApi="31">
         <activity
+            android:name=".ui.activity.MainScreenActivity"
+            android:exported="false"
+            android:label="@string/title_activity_main_screen"
+            android:theme="@style/Theme.JetpackCompose">
+        </activity>
+        <activity
+            android:name=".ui.activity.ExpensesManagerActivity"
+            android:exported="false"
+            android:label="@string/title_activity_expenses_manager"
+            android:theme="@style/Theme.JetpackCompose" />
+        <activity
             android:name=".ui.activity.LoginSignUpActivity"
             android:exported="true"
             android:theme="@style/Theme.JetpackCompose">
@@ -41,9 +52,7 @@
         <activity
             android:name=".ui.activity.MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.JetpackCompose">
-
-        </activity>
+            android:theme="@style/Theme.JetpackCompose" />
     </application>
 
 </manifest>

@@ -38,6 +38,7 @@ import com.omdeep.jetpackcompose.R
 import com.omdeep.jetpackcompose.ui.theme.Purple700
 import com.omdeep.jetpackcompose.ui.viewModel.LoginViewModel
 import android.content.Intent
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
@@ -49,9 +50,9 @@ import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.*
 import androidx.lifecycle.Observer
-import com.omdeep.jetpackcompose.ui.activity.MainActivity
+import com.omdeep.jetpackcompose.ui.activity.MainScreenActivity
 import com.omdeep.jetpackcompose.ui.viewModel.RegisterViewModel
-import com.omdeep.jetpackcompose.utils.Routes
+import com.omdeep.jetpackcompose.ui.navigation.Routes
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -63,6 +64,7 @@ fun LoginPage(
     focusManager: FocusManager = LocalFocusManager.current,
     keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current,
     ){
+//    lvm.shouldEnabled()
     Box(
         modifier = Modifier
             .fillMaxSize(1f)
@@ -131,6 +133,7 @@ fun LoginPage(
             value = lvm.email.value,
             onValueChange = {
                 lvm.email.value = it
+//                lvm.validateEmail()
             })
 
         Text(
@@ -181,6 +184,7 @@ fun LoginPage(
             value = lvm.password.value,
             onValueChange = {
                 lvm.password.value = it
+//                lvm.validatePassword()
             })
 
         Text(
@@ -197,15 +201,19 @@ fun LoginPage(
         Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
             Button(
                 onClick = {
+//                          lvm.newLogin()
                     lvm.login()
                     lvm.userLiveData.observe(lifecycle, Observer {
                         if (it != null) {
-                            mContext.startActivity(Intent(mContext, MainActivity::class.java))
+                            mContext.startActivity(Intent(mContext, MainScreenActivity::class.java))
                             lvm.userLiveData.value = null
+                        } else {
+                            Toast.makeText(mContext, "User not found", Toast.LENGTH_SHORT).show()
                         }
                     })
                 },
                 shape = RoundedCornerShape(50.dp),
+                enabled = true,
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight(0.23f),
@@ -240,7 +248,7 @@ fun LoginPage(
                 .padding(20.dp)
                 .fillMaxWidth(1f),
             onClick = {
-                navController.navigate(Routes.Login.route)
+                navController.navigate(Routes.SignUp.route)
             },
             style = TextStyle(
                 fontSize = 14.sp,
@@ -258,7 +266,7 @@ fun LoginPage(
 fun SignUpPage(
     navController: NavHostController,
     rvm: RegisterViewModel,
-    context: Context = LocalContext.current,
+    context : Context = LocalContext.current,
     focusManager: FocusManager = LocalFocusManager.current,
     keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current,
 ) {
@@ -306,6 +314,7 @@ fun SignUpPage(
             .fillMaxWidth()
             .padding(vertical = 10.dp),
             keyboardOptions = KeyboardOptions.Default.copy(
+                capitalization = KeyboardCapitalization.Words,
                 autoCorrect = true,
                 keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Next
@@ -494,6 +503,7 @@ fun SignUpPage(
                 onClick = {
                     rvm.register()
                     if (rvm.validate()) {
+                            Toast.makeText(context, "User Registered successfully.", Toast.LENGTH_SHORT).show()
                         navController.navigate(Routes.Login.route)
                     }
                 },

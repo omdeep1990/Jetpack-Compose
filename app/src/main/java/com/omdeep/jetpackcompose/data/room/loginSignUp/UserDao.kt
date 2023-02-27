@@ -1,4 +1,4 @@
-package com.omdeep.jetpackcompose.data.room
+package com.omdeep.jetpackcompose.data.room.loginSignUp
 
 import androidx.room.*
 

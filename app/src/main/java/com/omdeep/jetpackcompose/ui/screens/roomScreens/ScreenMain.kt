@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -12,10 +11,10 @@ import androidx.navigation.compose.rememberNavController
 import com.omdeep.jetpackcompose.data.factory.LoginFactory
 import com.omdeep.jetpackcompose.data.factory.RegisterFactory
 import com.omdeep.jetpackcompose.data.repository.UserRepository
-import com.omdeep.jetpackcompose.data.room.UserDatabase
+import com.omdeep.jetpackcompose.data.room.loginSignUp.UserDatabase
 import com.omdeep.jetpackcompose.ui.viewModel.LoginViewModel
 import com.omdeep.jetpackcompose.ui.viewModel.RegisterViewModel
-import com.omdeep.jetpackcompose.utils.Routes
+import com.omdeep.jetpackcompose.ui.navigation.Routes
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
