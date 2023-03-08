@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.omdeep.jetpackcompose.data.repository.UserRepository
-import com.omdeep.jetpackcompose.data.room.loginSignUp.User
+import com.omdeep.jetpackcompose.data.room.tables.User
 import com.omdeep.jetpackcompose.utils.ErrorMessage
 import com.omdeep.jetpackcompose.utils.Valid
 import kotlinx.coroutines.launch

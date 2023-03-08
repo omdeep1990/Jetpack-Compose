@@ -4,11 +4,12 @@ import android.text.TextUtils
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.omdeep.jetpackcompose.data.repository.EarningsRepository
-import com.omdeep.jetpackcompose.data.room.earnings.Earnings
-import com.omdeep.jetpackcompose.data.room.loginSignUp.User
+import com.omdeep.jetpackcompose.data.room.tables.Earnings
+import com.omdeep.jetpackcompose.utils.Convertors.convertDateToLong
 import com.omdeep.jetpackcompose.utils.ErrorMessage
 import com.omdeep.jetpackcompose.utils.Valid
 import kotlinx.coroutines.launch
@@ -16,17 +17,21 @@ import kotlinx.coroutines.launch
 class EarningsViewModel(private val repository: EarningsRepository) : ViewModel() {
     var checkEar: ErrorMessage = ErrorMessage()
 
-    var date: MutableState<String> = mutableStateOf(checkEar.selectedDate)
 
-    var time: MutableState<String> = mutableStateOf(checkEar.selectedTime)
+    var month: MutableState<String> = mutableStateOf("")
+    var year: MutableState<String> = mutableStateOf("")
+    var date: MutableState<String> = mutableStateOf("")
 
-    var earnings: MutableState<String> = mutableStateOf(checkEar.earningsType)
+    var time: MutableState<String> = mutableStateOf("")
+
+    var earnings: MutableState<String> = mutableStateOf("")
+
     var earningsErrMsg: MutableState<String> = mutableStateOf("")
 
-    var amount: MutableState<String> = mutableStateOf(checkEar.amount)
+    var amount: MutableState<String> = mutableStateOf("")
     var amountErrMsg: MutableState<String> = mutableStateOf("")
 
-    var note: MutableState<String> = mutableStateOf(checkEar.note)
+    var note: MutableState<String> = mutableStateOf("")
 
     fun validate(): Boolean {
         val isValidEarnings = TextUtils.isEmpty(earnings.value)
@@ -55,12 +60,12 @@ class EarningsViewModel(private val repository: EarningsRepository) : ViewModel(
         return repository.getEarnings
     }
 
-    fun fetchAllEarningsBYMonth(startDate : String, endDate : String) : LiveData<List<Earnings>> {
-        return repository.getEarningsByMonth(startDate, endDate)
+    fun fetchAllEarningsBYMonth(startDate: Long, endDate: Long) : LiveData<List<Earnings>> {
+            return repository.getEarningsByMonth(startDate, endDate)
     }
 
     fun insertAllEarnings() {
-        insertEarnings(Earnings(0, date.value, time.value, earnings.value, amount.value, note.value))
+        insertEarnings(Earnings(0, convertDateToLong(date.value), time.value, earnings.value, amount.value, note.value))
     }
 
 }

@@ -19,7 +19,22 @@ object Constants {
     const val JPG_EXT = ".jpg"
 
     const val ROOM_DATABASE = "room_database"
+    const val VERSION = 1
     const val PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%^&+=])(?=\\S+\$).{8,}\$"
-    const val EAR_DB = "earnings_database"
-    const val EXP_DAO = "expenses_database"
+
+    //NavController paths: -
+    const val LEDGER = "my_ledger"
+    const val EARNINGS = "earnings"
+    const val EXPENSES = "expenses"
+    const val GET_REPORT = "get_report"
+    const val EARNINGS_REPORT = "earnings_report"
+    const val EXPENSES_REPORT = "expenses_report"
+
+
+    const val DATE_PATTERN = "MM/yyyy"
+    val monthList = listOf("January", "February", "March", "April", "May", "June", "July", "August",
+        "September", "October", "November", "December")
+    val yearList = listOf("2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029",
+        "2030", "2031", "2032", "2033", "2034", "2035", "2036", "2037", "2038", "2039", "2040")
+
 }

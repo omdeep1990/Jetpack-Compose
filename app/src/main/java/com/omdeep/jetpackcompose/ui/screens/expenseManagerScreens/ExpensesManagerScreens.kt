@@ -3,10 +3,13 @@ package com.omdeep.jetpackcompose.ui.screens.expenseManagerScreens
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
+import android.os.Build
 import android.widget.DatePicker
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -15,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -36,24 +40,38 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
 import androidx.core.graphics.toColorInt
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.google.gson.Gson
 import com.omdeep.jetpackcompose.R
 import com.omdeep.jetpackcompose.data.factory.EarningsFactory
 import com.omdeep.jetpackcompose.data.factory.ExpensesFactory
 import com.omdeep.jetpackcompose.data.repository.EarningsRepository
 import com.omdeep.jetpackcompose.data.repository.ExpensesRepository
-import com.omdeep.jetpackcompose.data.room.earnings.EarningsDatabase
-import com.omdeep.jetpackcompose.data.room.expenses.ExpensesDatabase
+import com.omdeep.jetpackcompose.data.room.MainDatabase
 import com.omdeep.jetpackcompose.ui.navigation.ExpenseRoutes
+import com.omdeep.jetpackcompose.ui.theme.JetpackComposeTheme
 import com.omdeep.jetpackcompose.ui.viewModel.EarningsViewModel
 import com.omdeep.jetpackcompose.ui.viewModel.ExpensesViewModel
-import java.text.SimpleDateFormat
+import com.omdeep.jetpackcompose.utils.Calender.getEndDate
+import com.omdeep.jetpackcompose.utils.Calender.getStartDate
+import com.omdeep.jetpackcompose.utils.Calender.monthName
+import com.omdeep.jetpackcompose.utils.Calender.openDatePickerDialog
+import com.omdeep.jetpackcompose.utils.Calender.openTimePickerDialog
+import com.omdeep.jetpackcompose.utils.Calender.year
+import com.omdeep.jetpackcompose.utils.Constants.EARNINGS
+import com.omdeep.jetpackcompose.utils.Constants.EARNINGS_REPORT
+import com.omdeep.jetpackcompose.utils.Constants.EXPENSES
+import com.omdeep.jetpackcompose.utils.Constants.GET_REPORT
+import com.omdeep.jetpackcompose.utils.Constants.LEDGER
+import com.omdeep.jetpackcompose.utils.Constants.monthList
+import com.omdeep.jetpackcompose.utils.Constants.yearList
+import com.omdeep.jetpackcompose.utils.Convertors.convertDateToLong
 import java.util.*
 
 @Composable
@@ -81,30 +99,31 @@ fun MyTopAppBar(title: String) {
     )
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MainExpenseManagerScreen(
     navController: NavHostController,
     context: Context = LocalContext.current,
-    lifecycle: LifecycleOwner = LocalLifecycleOwner.current,
-    viewModel: EarningsViewModel = viewModel(factory = EarningsFactory(EarningsRepository(EarningsDatabase.getInstance(context).dao))),
-    exvm: ExpensesViewModel = viewModel(factory = ExpensesFactory(ExpensesRepository(ExpensesDatabase.getInstance(context).dao)))
+    earningsViewModel: EarningsViewModel = viewModel(factory = EarningsFactory(EarningsRepository(
+        MainDatabase.getInstance(context).dao))),
+    expensesViewModel: ExpensesViewModel = viewModel(factory = ExpensesFactory(ExpensesRepository(MainDatabase.getInstance(context).dao)))
 ) {
+    var mDisplayMenu by remember { mutableStateOf(false) }
+    var expandMonth by remember { mutableStateOf(false) }
+    var expandYear by remember { mutableStateOf(false) }
+    //Fetching and selecting month name from the month list and displaying data according to the date: -
+
+    val startDate = getStartDate(earningsViewModel.month, earningsViewModel.year)
+    val endDate = getEndDate(earningsViewModel.month, earningsViewModel.year)
+    val allEarningsByMonth =
+        earningsViewModel.fetchAllEarningsBYMonth(convertDateToLong(startDate), convertDateToLong(endDate)).observeAsState(initial = listOf())
+    val allExpenses = expensesViewModel.fetchAllExpensesByMonth(convertDateToLong(startDate), convertDateToLong(endDate)).observeAsState(initial = listOf())
     //TODO: fetching current month name from calender: -
-    val cal = Calendar.getInstance()
-    val month = cal.get(Calendar.MONTH)
-    val monthDate = SimpleDateFormat("MMMM", Locale.getDefault())
-    val monthName: String = monthDate.format(cal.time)
-    var totalEarnings : Float = 0F
-    var totalExpenses : Float = 0F
-//    val allEarnings = viewModel.fetchAllEarnings().observeAsState(initial = listOf())
-    var allEarnings = viewModel.fetchAllEarningsBYMonth("01/${month+1}/2023", "31/${month+1}/2023")
-    val allExpenses = exvm.fetchAllExpenses().observeAsState(initial = listOf())
-    if (allEarnings.value != null) {
-        for (i in allEarnings.value!!) {
-            totalEarnings += i.amount.toFloat()
-        }
-    } else {
-        Toast.makeText(context, "Non data found", Toast.LENGTH_SHORT).show()
+
+    var totalEarnings = 0F
+    var totalExpenses = 0F
+    for (i in allEarningsByMonth.value) {
+        totalEarnings += i.amount.toFloat()
     }
 
     for (i in allExpenses.value) {
@@ -118,7 +137,40 @@ fun MainExpenseManagerScreen(
         backgroundColor = Color.White,
         contentColor = Color.Blue,
         topBar = {
-            MyTopAppBar(title = "My Ledger")
+            TopAppBar(
+                title = {
+                    Text(
+                        modifier = Modifier
+                            .padding(8.dp),
+                        text = "My Ledger",
+                        fontSize = 30.sp,
+                        color = Color.Blue,
+                        textAlign = TextAlign.Center
+                    )
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
+                backgroundColor = Color.White,
+                contentColor = Color.Blue,
+                actions = {
+                    IconButton(onClick = { mDisplayMenu = !mDisplayMenu }) {
+                        Icon(Icons.Default.MoreVert, "")
+                    }
+                    DropdownMenu(
+                        expanded = mDisplayMenu,
+                        onDismissRequest = { mDisplayMenu = false }
+                    ) {
+                        DropdownMenuItem(onClick = {
+                            mDisplayMenu = false
+                            navController.navigate(GET_REPORT)
+                        }) {
+                            Text(text = "WhatsApp")
+                        }
+                    }
+                },
+                elevation = 0.dp
+            )
         }
     ) {
         Column(
@@ -142,17 +194,80 @@ fun MainExpenseManagerScreen(
                 border = BorderStroke(1.dp, Color.Black),
                 contentColor = Color.Black
             ) {
-                Text(
-                    text = "$monthName",
-                    style = TextStyle(
-                        fontSize = 50.sp,
-                        fontWeight = FontWeight.Bold,
-                        fontFamily = FontFamily.Cursive,
-                        textDecoration = TextDecoration.Underline,
-                        color = Color.Black,
-                        textAlign = TextAlign.Center
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(1f),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = if (earningsViewModel.month.value == "") monthName else earningsViewModel.month.value,
+                        style = TextStyle(
+                            fontSize = 50.sp,
+                            fontWeight = FontWeight.Bold,
+                            fontFamily = FontFamily.Cursive,
+                            textDecoration = TextDecoration.Underline,
+                            color = Color.Black,
+                            textAlign = TextAlign.Center
+                        )
                     )
-                )
+
+                    Icon(if (expandMonth) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown, "icon", Modifier.clickable { expandMonth = !expandMonth })
+
+                    DropdownMenu(
+                        expanded = expandMonth,
+                        onDismissRequest = { expandMonth = false },
+                        modifier = Modifier
+                            .fillMaxWidth(0.5f)
+                            .fillMaxHeight(0.5f)
+                    ) {
+                        monthList.forEach { label ->
+                            DropdownMenuItem(
+                                onClick = {
+                                    earningsViewModel.month.value = label
+                                    expandMonth = false
+                                }
+                            ) {
+                                Text(text = label)
+                            }
+                        }
+                    }
+
+                    Text(
+                        text = if (earningsViewModel.year.value == "") year.toString() else earningsViewModel.year.value,
+                        style = TextStyle(
+                            fontSize = 40.sp,
+                            fontWeight = FontWeight.Bold,
+                            fontFamily = FontFamily.Cursive,
+                            textDecoration = TextDecoration.Underline,
+                            color = Color.Black,
+                            textAlign = TextAlign.Center
+                        )
+                    )
+
+                    Icon(if (expandYear)
+                        Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown, "icon",
+                        Modifier.clickable { expandYear = !expandYear })
+
+                    DropdownMenu(
+                        expanded = expandYear,
+                        onDismissRequest = { expandYear = false },
+                        modifier = Modifier
+                            .fillMaxWidth(0.5f)
+                            .fillMaxHeight(0.5f)
+                    ) {
+                        yearList.forEach { label ->
+                            DropdownMenuItem(
+                                onClick = {
+                                    earningsViewModel.year.value = label
+                                    expandYear = false
+                                }
+                            ) {
+                                Text(text = label)
+                            }
+                        }
+                    }
+                }
             }
 
             Spacer(modifier = Modifier.padding(ButtonDefaults.IconSpacing))
@@ -170,7 +285,10 @@ fun MainExpenseManagerScreen(
                         .fillMaxHeight(0.4f)
                         .weight(1f)
                         .clip(RectangleShape)
-                        .padding(5.dp),
+                        .padding(5.dp)
+                        .clickable {
+                            navController.navigate("$EARNINGS_REPORT/${convertDateToLong(startDate)}/${convertDateToLong(endDate)}")
+                        },
                     shape = RoundedCornerShape(10.dp),
                     backgroundColor = Color("#FFE6FFFF".toColorInt()),
                     elevation = 5.dp,
@@ -291,7 +409,7 @@ fun MainExpenseManagerScreen(
                     )
                 },
                 onClick = {
-                    navController.navigate(ExpenseRoutes.Earnings.route)
+                    navController.navigate(EARNINGS)
                 },
                 backgroundColor = Color.Green,
                 contentColor = Color.White,
@@ -325,7 +443,7 @@ fun MainExpenseManagerScreen(
                     )
                 },
                 onClick = {
-                    navController.navigate(ExpenseRoutes.Expenses.route)
+                    navController.navigate(EXPENSES)
                 },
                 backgroundColor = Color.Red,
                 contentColor = Color.White,
@@ -349,9 +467,8 @@ fun MainExpenseManagerScreen(
 fun AddExpenses(
     navController: NavHostController,
     context: Context = LocalContext.current,
-    lifecycle: LifecycleOwner = LocalLifecycleOwner.current,
     focusManager: FocusManager = LocalFocusManager.current,
-    evm: ExpensesViewModel = viewModel(factory = ExpensesFactory(ExpensesRepository(ExpensesDatabase.getInstance(context).dao))),
+    evm: ExpensesViewModel = viewModel(factory = ExpensesFactory(ExpensesRepository(MainDatabase.getInstance(context).dao))),
     keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current,
 ) {
     //TODO: For opening drop down menu in text field: -
@@ -392,7 +509,6 @@ fun AddExpenses(
     month = mCalendar.get(Calendar.MONTH)
     day = mCalendar.get(Calendar.DAY_OF_MONTH)
 
-    mCalendar.time = Date()
     val datePickerDialog = DatePickerDialog(
         context,
         { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
@@ -481,14 +597,14 @@ fun AddExpenses(
                                 .width(30.dp)
                                 .height(30.dp)
                                 .clickable {
-                                    datePickerDialog.show()
+                                    openDatePickerDialog(context, evm.date).show()
                                 },
                             painter = painterResource(id = R.drawable.calendar),
                             contentDescription = "date"
                         )
                     },
                     shape = RoundedCornerShape(10.dp),
-                    isError = false,
+                    isError = evm.isValidDate.value,
                     maxLines = 1,
                     singleLine = true,
                     value = evm.date.value,
@@ -517,14 +633,14 @@ fun AddExpenses(
                                 .width(30.dp)
                                 .height(30.dp)
                                 .clickable {
-                                    timePickerDialog.show()
+                                    openTimePickerDialog(context, evm.time).show()
                                 },
                             painter = painterResource(id = R.drawable.time),
                             contentDescription = "time"
                         )
                     },
                     shape = RoundedCornerShape(10.dp),
-                    isError = false,
+                    isError = evm.isValidTime.value,
                     maxLines = 1,
                     singleLine = true,
                     value = evm.time.value,
@@ -550,14 +666,14 @@ fun AddExpenses(
                 keyboardActions = KeyboardActions(onNext = {
                     focusManager.moveFocus(FocusDirection.Down)
                 }),
-                label = { Text(text = "Earnings Type") },
-                placeholder = { Text(text = "Earnings Type") },
+                label = { Text(text = "Expenses Type") },
+                placeholder = { Text(text = "Expenses Type") },
                 trailingIcon = {
                     Icon(icon, "icon",
                         Modifier.clickable { mExpanded = !mExpanded })
                 },
                 shape = RoundedCornerShape(10.dp),
-                isError = false,
+                isError = evm.isValidExpenses.value,
                 maxLines = 1,
                 singleLine = true,
                 value = evm.expenses.value,
@@ -568,14 +684,15 @@ fun AddExpenses(
             Text(
                 modifier = Modifier
                     .padding(8.dp),
-                text = evm.earningsErrMsg.value,
+                text = evm.expensesErrMsg.value,
                 fontSize = 14.sp,
                 color = Color.Red
             )
 
-            OutlinedTextField(modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 10.dp),
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 10.dp),
                 keyboardOptions = KeyboardOptions.Default.copy(
                     autoCorrect = true,
                     keyboardType = KeyboardType.Number,
@@ -603,7 +720,7 @@ fun AddExpenses(
                         })
                 },
                 shape = RoundedCornerShape(10.dp),
-                isError = false,
+                isError = evm.isValidAmount.value,
                 maxLines = 1,
                 singleLine = true,
                 value = evm.amount.value,
@@ -668,7 +785,7 @@ fun AddExpenses(
                         if (evm.validate()) {
                             evm.insertAllExpenses()
                             Toast.makeText(context, "Current expenses inserted successfully", Toast.LENGTH_SHORT).show()
-                            navController.navigate(ExpenseRoutes.Ledger.route)
+                            navController.navigate(LEDGER)
                         }
                     },
                     shape = RoundedCornerShape(50.dp),
@@ -709,9 +826,8 @@ fun AddExpenses(
 fun AddEarnings(
     navController: NavHostController,
     context: Context = LocalContext.current,
-    lifecycle: LifecycleOwner = LocalLifecycleOwner.current,
     focusManager: FocusManager = LocalFocusManager.current,
-    evm: EarningsViewModel = viewModel(factory = EarningsFactory(EarningsRepository(EarningsDatabase.getInstance(context).dao))),
+    evm: EarningsViewModel = viewModel(factory = EarningsFactory(EarningsRepository(MainDatabase.getInstance(context).dao))),
     keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current,
 ) {
     //TODO: For opening drop down menu in textfield: -
@@ -841,7 +957,7 @@ fun AddEarnings(
                                 .width(30.dp)
                                 .height(30.dp)
                                 .clickable {
-                                    datePickerDialog.show()
+                                    openDatePickerDialog(context, evm.date).show()
                                 },
                             painter = painterResource(id = R.drawable.calendar),
                             contentDescription = "date"
@@ -877,7 +993,7 @@ fun AddEarnings(
                                 .width(30.dp)
                                 .height(30.dp)
                                 .clickable {
-                                    timePickerDialog.show()
+                                    openTimePickerDialog(context, evm.time).show()
                                 },
                             painter = painterResource(id = R.drawable.time),
                             contentDescription = "time"
@@ -1027,10 +1143,9 @@ fun AddEarnings(
                     onClick = {
                         if (evm.validate()) {
                             evm.insertAllEarnings()
-                            navController.navigate(ExpenseRoutes.Ledger.route)
+                            navController.navigate(LEDGER)
                             Toast.makeText(context, "Current earnings inserted successfully", Toast.LENGTH_SHORT).show()
                         }
-                        navController.navigate(ExpenseRoutes.Ledger.route)
                     },
                     shape = RoundedCornerShape(50.dp),
                     enabled = true,
@@ -1071,3 +1186,50 @@ fun CurrentMonthReport(
 ) {
 
 }
+
+@Composable
+fun Table(list: List<List<String>>) {
+    LazyColumn(modifier = Modifier.fillMaxWidth()) {
+        list.forEachIndexed { index, rowData ->
+            item {
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    rowData.forEach { cellData ->
+                        Text(
+                            text = cellData,
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(4.dp)
+                        )
+                    }
+                }
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    rowData.forEach { cellData ->
+                        Text(
+                            text = cellData,
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(4.dp)
+                        )
+                    }
+                }
+                if (index != list.lastIndex) {
+                    Divider(color = MaterialTheme.colors.onSurface.copy(alpha = 0.08f))
+                }
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DefaultPreview4() {
+    val list = listOf(listOf("Omdeep", "Shankar", "Sree", "Gajendra"))
+    JetpackComposeTheme {
+        Table(list = list)
+    }
+}
+//
+//@Composable
+//fun Testing() {
+//    LazyVerticalGrid(columns = , content = )
+//}

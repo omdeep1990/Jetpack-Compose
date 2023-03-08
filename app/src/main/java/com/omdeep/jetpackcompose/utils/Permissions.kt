@@ -21,4 +21,6 @@ object Permissions {
             ContextCompat.checkSelfPermission(ctx, it) ==
                     PackageManager.PERMISSION_GRANTED
         }
+
+
 }

@@ -25,6 +25,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
+import com.omdeep.jetpackcompose.ui.activity.BarcodeAnalyserActivity
 import com.omdeep.jetpackcompose.ui.activity.ExpensesManagerActivity
 import com.omdeep.jetpackcompose.ui.activity.MainActivity
 
@@ -39,7 +40,7 @@ fun ComposeMainScreen(
             .padding(10.dp)
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Top
     ) {
         Card(
             modifier = Modifier
@@ -93,5 +94,35 @@ fun ComposeMainScreen(
                 )
             )
         }
+
+        Spacer(modifier = Modifier.padding(ButtonDefaults.IconSpacing))
+
+        Card(
+            modifier = Modifier
+                .fillMaxWidth(1f)
+                .fillMaxHeight(0.4f)
+//                .weight(1f)
+                .clickable {
+                    context.startActivity(Intent(context, BarcodeAnalyserActivity::class.java))
+                },
+            shape = RoundedCornerShape(10.dp),
+            backgroundColor = Color("#FFE6FFFF".toColorInt()),
+            elevation = 10.dp,
+            contentColor = Color.Black
+        ) {
+            Text(
+                text = "BarCode Analyser",
+                style = TextStyle(
+                    fontSize = 25.sp,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = FontFamily.Default,
+                    textDecoration = TextDecoration.None,
+                    color = Color.Black,
+                    textAlign = TextAlign.Center
+                )
+            )
+        }
+        Spacer(modifier = Modifier.padding(ButtonDefaults.IconSpacing))
+
     }
 }

@@ -11,7 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import com.omdeep.jetpackcompose.data.factory.LoginFactory
 import com.omdeep.jetpackcompose.data.factory.RegisterFactory
 import com.omdeep.jetpackcompose.data.repository.UserRepository
-import com.omdeep.jetpackcompose.data.room.loginSignUp.UserDatabase
+import com.omdeep.jetpackcompose.data.room.MainDatabase
 import com.omdeep.jetpackcompose.ui.viewModel.LoginViewModel
 import com.omdeep.jetpackcompose.ui.viewModel.RegisterViewModel
 import com.omdeep.jetpackcompose.ui.navigation.Routes
@@ -20,8 +20,8 @@ import com.omdeep.jetpackcompose.ui.navigation.Routes
 @Composable
 fun ScreenMain(
     navController: NavHostController = rememberNavController(),
-    lvm : LoginViewModel = viewModel(factory = LoginFactory(UserRepository(UserDatabase.getInstance(LocalContext.current).dao))),
-    rvm : RegisterViewModel = viewModel(factory = RegisterFactory(UserRepository(UserDatabase.getInstance(LocalContext.current).dao))),
+    lvm : LoginViewModel = viewModel(factory = LoginFactory(UserRepository(MainDatabase.getInstance(LocalContext.current).dao))),
+    rvm : RegisterViewModel = viewModel(factory = RegisterFactory(UserRepository(MainDatabase.getInstance(LocalContext.current).dao))),
 ) {
     NavHost(navController = navController, startDestination = Routes.Login.route) {
         composable(Routes.Login.route) {

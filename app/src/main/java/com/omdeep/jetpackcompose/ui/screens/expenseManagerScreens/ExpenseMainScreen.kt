@@ -6,28 +6,39 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.omdeep.jetpackcompose.ui.navigation.ExpenseRoutes
+import com.omdeep.jetpackcompose.utils.Constants.EARNINGS
+import com.omdeep.jetpackcompose.utils.Constants.EARNINGS_REPORT
+import com.omdeep.jetpackcompose.utils.Constants.EXPENSES
+import com.omdeep.jetpackcompose.utils.Constants.GET_REPORT
+import com.omdeep.jetpackcompose.utils.Constants.LEDGER
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ExpenseMainScreen(
     navController: NavHostController = rememberNavController()
 ) {
-    NavHost(navController = navController, startDestination = ExpenseRoutes.Ledger.route) {
-        composable(ExpenseRoutes.Ledger.route) {
+    NavHost(navController = navController, startDestination = LEDGER) {
+
+        composable(LEDGER) {
             MainExpenseManagerScreen(navController = navController)
         }
 
-        composable(ExpenseRoutes.Earnings.route) {
+        composable(EARNINGS) {
             AddEarnings(navController = navController)
         }
 
-        composable(ExpenseRoutes.Expenses.route) {
+        composable(EXPENSES) {
             AddExpenses(navController = navController)
         }
 
-        composable(ExpenseRoutes.CurrentReport.route) {
-            CurrentMonthReport(navController = navController)
+        composable(GET_REPORT) {
+            SearchReportByStartDateEndDate(navController = navController)
+        }
+
+        composable("$EARNINGS_REPORT/{start_date}/{end_date}") { navBackStack ->
+            val startDate = navBackStack.arguments?.getString("start_date")
+            val endDate = navBackStack.arguments?.getString("end_date")
+            EarningsReportSelectedMonth(startDate!!, endDate!!)
         }
 
     }

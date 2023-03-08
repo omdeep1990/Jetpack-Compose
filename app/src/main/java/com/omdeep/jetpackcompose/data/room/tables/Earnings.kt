@@ -1,17 +1,15 @@
-package com.omdeep.jetpackcompose.data.room.expenses
+package com.omdeep.jetpackcompose.data.room.tables
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.*
 
-@Entity(tableName = "expenses_table")
-class Expenses(
+@Entity(tableName = "earning_table")
+class Earnings(
 
     @PrimaryKey(autoGenerate = true)
     val srNo : Int,
 
     @ColumnInfo(name = "Date")
-    val date : String,
+    val date : Long,
 
     @ColumnInfo(name = "Time")
     val time : String,
