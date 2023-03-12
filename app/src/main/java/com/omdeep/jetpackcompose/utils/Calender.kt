@@ -19,8 +19,8 @@ import java.util.*
 object Calender {
     private val calendar: Calendar = Calendar.getInstance()
     val year = calendar.get(Calendar.YEAR)
-    val month = calendar.get(Calendar.MONTH)
-    val day = calendar.get(Calendar.DAY_OF_MONTH)
+    private val month = calendar.get(Calendar.MONTH)
+    private val day = calendar.get(Calendar.DAY_OF_MONTH)
     var hour = calendar[Calendar.HOUR_OF_DAY]
     var minute = calendar[Calendar.MINUTE]
     private val monthDate = SimpleDateFormat("MMMM", Locale.US)
@@ -71,13 +71,13 @@ object Calender {
 
     fun getStartDate(monthName: MutableState<String>, yearName: MutableState<String>): String {
         return if (monthName.value != "" && yearName.value != "") {
-            "01/0${monthList.indexOf(monthName.value) + 1}/${yearName.value}"
+            "01/${monthList.indexOf(monthName.value) + 1}/${yearName.value}"
         } else if (monthName.value == "" && yearName.value != "") {
-            "01/0${month + 1}/${yearName.value}"
+            "01/${month + 1}/${yearName.value}"
         } else if (monthName.value != "" && yearName.value == "") {
-            "01/0${monthList.indexOf(monthName.value) + 1}/$year"
+            "01/${monthList.indexOf(monthName.value) + 1}/$year"
         } else {
-            "01/0${month + 1}/$year"
+            "01/${month + 1}/$year"
         }
     }
 
@@ -100,7 +100,7 @@ object Calender {
             if (monthIndex < 9) {
                 "${getLastDayOfMonth("0${monthIndex + 1}/${year}")}/${monthIndex + 1}/$year"
             } else {
-                "${getLastDayOfMonth("0${monthIndex + 1}/$year")}/${monthIndex + 1}/$year"
+                "${getLastDayOfMonth("${monthIndex + 1}/$year")}/${monthIndex + 1}/$year"
             }
         } else {
             if (month < 9) {

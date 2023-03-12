@@ -7,4 +7,5 @@
     <string name="title_activity_expenses_manager">ExpensesManagerActivity</string>
     <string name="title_activity_main_screen">MainScreenActivity</string>
     <string name="title_activity_barcode_analyser">BarcodeAnalyserActivity</string>
+    <string name="back">Back Press</string>
 </resources>

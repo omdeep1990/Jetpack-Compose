@@ -10,6 +10,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
+import com.omdeep.jetpackcompose.ui.screens.mlKit.CameraPreview
 import com.omdeep.jetpackcompose.ui.screens.mlKit.MlKitScreen
 import com.omdeep.jetpackcompose.ui.theme.JetpackComposeTheme
 
@@ -30,15 +32,10 @@ class BarcodeAnalyserActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun Greeting5(name: String) {
-    Text(text = "Hello $name!")
-}
-
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview7() {
     JetpackComposeTheme {
-        Greeting5("Android")
+        CameraPreview(navController = rememberNavController())
     }
 }

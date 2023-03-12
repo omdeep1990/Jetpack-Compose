@@ -9,6 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import com.omdeep.jetpackcompose.utils.Constants.EARNINGS
 import com.omdeep.jetpackcompose.utils.Constants.EARNINGS_REPORT
 import com.omdeep.jetpackcompose.utils.Constants.EXPENSES
+import com.omdeep.jetpackcompose.utils.Constants.EXPENSES_REPORT
 import com.omdeep.jetpackcompose.utils.Constants.GET_REPORT
 import com.omdeep.jetpackcompose.utils.Constants.LEDGER
 
@@ -38,7 +39,13 @@ fun ExpenseMainScreen(
         composable("$EARNINGS_REPORT/{start_date}/{end_date}") { navBackStack ->
             val startDate = navBackStack.arguments?.getString("start_date")
             val endDate = navBackStack.arguments?.getString("end_date")
-            EarningsReportSelectedMonth(startDate!!, endDate!!)
+            EarningsReportSelectedMonth(startDate!!, endDate!!, navController)
+        }
+
+        composable("$EXPENSES_REPORT/{start_date}/{end_date}") { navBackStack ->
+            val startDate = navBackStack.arguments?.getString("start_date")
+            val endDate = navBackStack.arguments?.getString("end_date")
+            ExpensesReportSelectedMonth(startDate!!, endDate!!, navController)
         }
 
     }

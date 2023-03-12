@@ -40,4 +40,5 @@ class ReportViewModel(private val earnRep : EarningsRepository, private val expR
         }
         return !isStartDateValid && !isEndDateValid
     }
+
 }

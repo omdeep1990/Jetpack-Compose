@@ -2,6 +2,7 @@ package com.omdeep.jetpackcompose.ui.screens.mlKit
 
 import android.Manifest
 import android.content.Context
+import android.content.res.Configuration
 import android.util.Log
 import android.view.ViewGroup
 import android.widget.Toast
@@ -22,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
@@ -30,6 +32,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
@@ -81,7 +84,8 @@ fun BarCodeScannerScreen(navController: NavController,
 fun CameraPreview(
     navController: NavController,
     context: Context = LocalContext.current,
-    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
+    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
+    configuration : Configuration = LocalConfiguration.current
 ) {
     var preview by remember {
         mutableStateOf<Preview?>(null)
@@ -92,69 +96,67 @@ fun CameraPreview(
 
     Column(
         modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight(),
+            .fillMaxWidth(1f)
+            .fillMaxHeight(1f),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-
-    }
-    AndroidView(
-        factory = { AndroidViewContext ->
-            PreviewView(AndroidViewContext).apply {
-                this.scaleType = PreviewView.ScaleType.FILL_CENTER
-                layoutParams = ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                )
-                implementationMode = PreviewView.ImplementationMode.COMPATIBLE
-            }
-        },
-        modifier = Modifier
-            .fillMaxWidth(0.6f)
-            .fillMaxHeight(0.3f)
-            .clip(RectangleShape)
-            .border(2.dp, Color.Blue, RoundedCornerShape(5.dp)),
-        update = { previewView ->
-            val cameraSelector: CameraSelector = CameraSelector.Builder()
-                .requireLensFacing(CameraSelector.LENS_FACING_BACK)
-                .build()
-            val cameraExecutor: ExecutorService = Executors.newSingleThreadExecutor()
-            val cameraProviderFuture: ListenableFuture<ProcessCameraProvider> =
-                ProcessCameraProvider.getInstance(context)
-
-            cameraProviderFuture.addListener({
-                preview = Preview.Builder().build().also {
-                    it.setSurfaceProvider(previewView.surfaceProvider)
+        AndroidView(
+            factory = { AndroidViewContext ->
+                PreviewView(AndroidViewContext).apply {
+                    this.scaleType = PreviewView.ScaleType.FILL_CENTER
+                    layoutParams = ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                    )
+                    implementationMode = PreviewView.ImplementationMode.COMPATIBLE
                 }
-                val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
-                val barcodeAnalyser = BarCodeAnalyser { barcodes ->
-                    barcodes.forEach { barcode ->
-                        barcode.rawValue?.let { barcodeValue ->
-                            barcodeVal.value = barcodeValue
-                            Toast.makeText(context, barcodeVal.value, Toast.LENGTH_SHORT).show()
+            },
+            modifier = Modifier
+                .width(configuration.screenWidthDp.dp / 2)
+                .height(configuration.screenWidthDp.dp / 2)
+                .border(2.dp, Color.Blue, RoundedCornerShape(5.dp)),
+            update = { previewView ->
+                val cameraSelector: CameraSelector = CameraSelector.Builder()
+                    .requireLensFacing(CameraSelector.LENS_FACING_BACK)
+                    .build()
+                val cameraExecutor: ExecutorService = Executors.newSingleThreadExecutor()
+                val cameraProviderFuture: ListenableFuture<ProcessCameraProvider> =
+                    ProcessCameraProvider.getInstance(context)
+
+                cameraProviderFuture.addListener({
+                    preview = Preview.Builder().build().also {
+                        it.setSurfaceProvider(previewView.surfaceProvider)
+                    }
+                    val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
+                    val barcodeAnalyser = BarCodeAnalyser { barcodes ->
+                        barcodes.forEach { barcode ->
+                            barcode.rawValue?.let { barcodeValue ->
+                                barcodeVal.value = barcodeValue
+                                Toast.makeText(context, barcodeVal.value, Toast.LENGTH_SHORT).show()
+                            }
                         }
                     }
-                }
-                val imageAnalysis: ImageAnalysis = ImageAnalysis.Builder()
-                    .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-                    .build()
-                    .also {
-                        it.setAnalyzer(cameraExecutor, barcodeAnalyser)
-                    }
+                    val imageAnalysis: ImageAnalysis = ImageAnalysis.Builder()
+                        .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                        .build()
+                        .also {
+                            it.setAnalyzer(cameraExecutor, barcodeAnalyser)
+                        }
 
-                try {
-                    cameraProvider.unbindAll()
-                    cameraProvider.bindToLifecycle(
-                        lifecycleOwner,
-                        cameraSelector,
-                        preview,
-                        imageAnalysis
-                    )
-                } catch (e: Exception) {
-                    Log.d("TAG", "CameraPreview: ${e.localizedMessage}")
-                }
-            }, ContextCompat.getMainExecutor(context))
-        }
-    )
+                    try {
+                        cameraProvider.unbindAll()
+                        cameraProvider.bindToLifecycle(
+                            lifecycleOwner,
+                            cameraSelector,
+                            preview,
+                            imageAnalysis
+                        )
+                    } catch (e: Exception) {
+                        Log.d("TAG", "CameraPreview: ${e.localizedMessage}")
+                    }
+                }, ContextCompat.getMainExecutor(context))
+            }
+        )
+    }
 }

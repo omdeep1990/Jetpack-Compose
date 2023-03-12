@@ -1,24 +1,16 @@
 package com.omdeep.jetpackcompose.ui.screens.expenseManagerScreens
 
-import android.app.DatePickerDialog
-import android.app.TimePickerDialog
 import android.content.Context
-import android.os.Build
-import android.widget.DatePicker
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -47,14 +39,12 @@ import androidx.compose.ui.unit.toSize
 import androidx.core.graphics.toColorInt
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.google.gson.Gson
 import com.omdeep.jetpackcompose.R
 import com.omdeep.jetpackcompose.data.factory.EarningsFactory
 import com.omdeep.jetpackcompose.data.factory.ExpensesFactory
 import com.omdeep.jetpackcompose.data.repository.EarningsRepository
 import com.omdeep.jetpackcompose.data.repository.ExpensesRepository
 import com.omdeep.jetpackcompose.data.room.MainDatabase
-import com.omdeep.jetpackcompose.ui.navigation.ExpenseRoutes
 import com.omdeep.jetpackcompose.ui.theme.JetpackComposeTheme
 import com.omdeep.jetpackcompose.ui.viewModel.EarningsViewModel
 import com.omdeep.jetpackcompose.ui.viewModel.ExpensesViewModel
@@ -67,6 +57,7 @@ import com.omdeep.jetpackcompose.utils.Calender.year
 import com.omdeep.jetpackcompose.utils.Constants.EARNINGS
 import com.omdeep.jetpackcompose.utils.Constants.EARNINGS_REPORT
 import com.omdeep.jetpackcompose.utils.Constants.EXPENSES
+import com.omdeep.jetpackcompose.utils.Constants.EXPENSES_REPORT
 import com.omdeep.jetpackcompose.utils.Constants.GET_REPORT
 import com.omdeep.jetpackcompose.utils.Constants.LEDGER
 import com.omdeep.jetpackcompose.utils.Constants.monthList
@@ -99,7 +90,6 @@ fun MyTopAppBar(title: String) {
     )
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MainExpenseManagerScreen(
     navController: NavHostController,
@@ -141,31 +131,55 @@ fun MainExpenseManagerScreen(
                 title = {
                     Text(
                         modifier = Modifier
+                            .fillMaxWidth(1f)
                             .padding(8.dp),
                         text = "My Ledger",
                         fontSize = 30.sp,
-                        color = Color.Blue,
+                        color = Color.White,
                         textAlign = TextAlign.Center
                     )
                 },
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight(),
-                backgroundColor = Color.White,
+                backgroundColor = Color("#04347c".toColorInt()),
                 contentColor = Color.Blue,
                 actions = {
-                    IconButton(onClick = { mDisplayMenu = !mDisplayMenu }) {
-                        Icon(Icons.Default.MoreVert, "")
+                    IconButton(
+                        onClick = { mDisplayMenu = !mDisplayMenu }) {
+                        Card(
+                            modifier = Modifier
+                                .wrapContentWidth()
+                                .wrapContentHeight()
+                                .padding(10.dp),
+                            shape = RoundedCornerShape(50.dp),
+                            backgroundColor = Color("#91B8F1".toColorInt()),
+                            elevation = 15.dp,
+                            border = BorderStroke(1.dp, Color.LightGray),
+                            contentColor = Color.Black
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Segment,
+                                contentDescription = "",
+                                tint = Color.White)
+                        }
                     }
                     DropdownMenu(
                         expanded = mDisplayMenu,
                         onDismissRequest = { mDisplayMenu = false }
                     ) {
-                        DropdownMenuItem(onClick = {
+                        DropdownMenuItem(
+                            onClick = {
                             mDisplayMenu = false
                             navController.navigate(GET_REPORT)
                         }) {
-                            Text(text = "WhatsApp")
+                                Text(text = "View Short report")
+                            Divider(
+                                modifier = Modifier
+                                    .fillMaxWidth(1f),
+                                color = Color.LightGray,
+                                thickness = 0.2.dp
+                            )
                         }
                     }
                 },
@@ -183,15 +197,22 @@ fun MainExpenseManagerScreen(
             verticalArrangement = Arrangement.Top
         ) {
 
+            Divider(
+                modifier = Modifier
+                    .fillMaxWidth(1f),
+                color = Color.LightGray,
+                thickness = 0.2.dp
+            )
+
             Card(
                 modifier = Modifier
                     .fillMaxWidth(1f)
                     .fillMaxHeight(0.12f)
                     .padding(5.dp),
                 shape = RoundedCornerShape(10.dp),
-                backgroundColor = Color("#FFE6FFFF".toColorInt()),
-                elevation = 5.dp,
-                border = BorderStroke(1.dp, Color.Black),
+                backgroundColor = Color("#b193c2".toColorInt()),
+                elevation = 15.dp,
+                border = BorderStroke(1.dp, Color.LightGray),
                 contentColor = Color.Black
             ) {
                 Row(
@@ -203,14 +224,16 @@ fun MainExpenseManagerScreen(
                     Text(
                         text = if (earningsViewModel.month.value == "") monthName else earningsViewModel.month.value,
                         style = TextStyle(
-                            fontSize = 50.sp,
-                            fontWeight = FontWeight.Bold,
-                            fontFamily = FontFamily.Cursive,
-                            textDecoration = TextDecoration.Underline,
+                            fontSize = 30.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            fontFamily = FontFamily.SansSerif,
+                            textDecoration = TextDecoration.None,
                             color = Color.Black,
                             textAlign = TextAlign.Center
                         )
                     )
+
+                    Spacer(modifier = Modifier.padding(ButtonDefaults.IconSpacing))
 
                     Icon(if (expandMonth) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown, "icon", Modifier.clickable { expandMonth = !expandMonth })
 
@@ -236,10 +259,10 @@ fun MainExpenseManagerScreen(
                     Text(
                         text = if (earningsViewModel.year.value == "") year.toString() else earningsViewModel.year.value,
                         style = TextStyle(
-                            fontSize = 40.sp,
-                            fontWeight = FontWeight.Bold,
-                            fontFamily = FontFamily.Cursive,
-                            textDecoration = TextDecoration.Underline,
+                            fontSize = 30.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            fontFamily = FontFamily.SansSerif,
+                            textDecoration = TextDecoration.None,
                             color = Color.Black,
                             textAlign = TextAlign.Center
                         )
@@ -271,6 +294,12 @@ fun MainExpenseManagerScreen(
             }
 
             Spacer(modifier = Modifier.padding(ButtonDefaults.IconSpacing))
+            Divider(
+                modifier = Modifier
+                    .fillMaxWidth(1f),
+                color = Color.LightGray,
+                thickness = 0.2.dp
+            )
 
             Row(
                 modifier = Modifier
@@ -287,7 +316,13 @@ fun MainExpenseManagerScreen(
                         .clip(RectangleShape)
                         .padding(5.dp)
                         .clickable {
-                            navController.navigate("$EARNINGS_REPORT/${convertDateToLong(startDate)}/${convertDateToLong(endDate)}")
+                            navController.navigate(
+                                "$EARNINGS_REPORT/${convertDateToLong(startDate)}/${
+                                    convertDateToLong(
+                                        endDate
+                                    )
+                                }"
+                            )
                         },
                     shape = RoundedCornerShape(10.dp),
                     backgroundColor = Color("#FFE6FFFF".toColorInt()),
@@ -341,7 +376,16 @@ fun MainExpenseManagerScreen(
                         .fillMaxHeight(0.4f)
                         .weight(1f)
                         .clip(RectangleShape)
-                        .padding(5.dp),
+                        .padding(5.dp)
+                        .clickable {
+                            navController.navigate(
+                                "$EXPENSES_REPORT/${convertDateToLong(startDate)}/${
+                                    convertDateToLong(
+                                        endDate
+                                    )
+                                }"
+                            )
+                        },
                     shape = RoundedCornerShape(10.dp),
                     backgroundColor = Color("#FFE6FFFF".toColorInt()),
                     elevation = 5.dp,
@@ -498,33 +542,6 @@ fun AddExpenses(
             }
         }
     }
-
-    //TODO: Date picker dialog: -
-    val year: Int
-    val month: Int
-    val day: Int
-
-    val mCalendar = Calendar.getInstance()
-    year = mCalendar.get(Calendar.YEAR)
-    month = mCalendar.get(Calendar.MONTH)
-    day = mCalendar.get(Calendar.DAY_OF_MONTH)
-
-    val datePickerDialog = DatePickerDialog(
-        context,
-        { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
-            evm.date.value = "$mDayOfMonth/${mMonth + 1}/$mYear"
-        }, year, month, day
-    )
-
-    //TODO: Time picker dialog: -
-    val hour = mCalendar[Calendar.HOUR_OF_DAY]
-    val minute = mCalendar[Calendar.MINUTE]
-    val timePickerDialog = TimePickerDialog(
-        context,
-        { _, mHour: Int, mMinute: Int ->
-            evm.time.value = "$mHour:$mMinute"
-        }, hour, minute, false
-    )
 
     Scaffold(
         modifier = Modifier
@@ -858,34 +875,6 @@ fun AddEarnings(
         }
     }
 
-    //TODO: Date picker dialog: -
-    val year: Int
-    val month: Int
-    val day: Int
-
-    val mCalendar = Calendar.getInstance()
-    year = mCalendar.get(Calendar.YEAR)
-    month = mCalendar.get(Calendar.MONTH)
-    day = mCalendar.get(Calendar.DAY_OF_MONTH)
-
-    mCalendar.time = Date()
-    val datePickerDialog = DatePickerDialog(
-        context,
-        { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
-            evm.date.value = "$mDayOfMonth/${mMonth + 1}/$mYear"
-        }, year, month, day
-    )
-
-    //TODO: Time picker dialog: -
-    val hour = mCalendar[Calendar.HOUR_OF_DAY]
-    val minute = mCalendar[Calendar.MINUTE]
-    val timePickerDialog = TimePickerDialog(
-        context,
-        { _, mHour: Int, mMinute: Int ->
-            evm.time.value = "$mHour:$mMinute"
-        }, hour, minute, false
-    )
-
     Scaffold(
         modifier = Modifier
             .fillMaxWidth()
@@ -1187,49 +1176,10 @@ fun CurrentMonthReport(
 
 }
 
-@Composable
-fun Table(list: List<List<String>>) {
-    LazyColumn(modifier = Modifier.fillMaxWidth()) {
-        list.forEachIndexed { index, rowData ->
-            item {
-                Row(modifier = Modifier.fillMaxWidth()) {
-                    rowData.forEach { cellData ->
-                        Text(
-                            text = cellData,
-                            modifier = Modifier
-                                .weight(1f)
-                                .padding(4.dp)
-                        )
-                    }
-                }
-                Row(modifier = Modifier.fillMaxWidth()) {
-                    rowData.forEach { cellData ->
-                        Text(
-                            text = cellData,
-                            modifier = Modifier
-                                .weight(1f)
-                                .padding(4.dp)
-                        )
-                    }
-                }
-                if (index != list.lastIndex) {
-                    Divider(color = MaterialTheme.colors.onSurface.copy(alpha = 0.08f))
-                }
-            }
-        }
-    }
-}
-
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview4() {
-    val list = listOf(listOf("Omdeep", "Shankar", "Sree", "Gajendra"))
     JetpackComposeTheme {
-        Table(list = list)
+
     }
 }
-//
-//@Composable
-//fun Testing() {
-//    LazyVerticalGrid(columns = , content = )
-//}

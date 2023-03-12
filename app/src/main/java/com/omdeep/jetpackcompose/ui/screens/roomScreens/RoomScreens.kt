@@ -45,6 +45,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.text.font.FontWeight
@@ -59,12 +60,16 @@ import com.omdeep.jetpackcompose.ui.navigation.Routes
 fun LoginPage(
     navController: NavHostController,
     lvm: LoginViewModel,
-    mContext : Context = LocalContext.current,
-    lifecycle : LifecycleOwner = LocalLifecycleOwner.current,
+    mContext: Context = LocalContext.current,
+    lifecycle: LifecycleOwner = LocalLifecycleOwner.current,
     focusManager: FocusManager = LocalFocusManager.current,
     keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current,
-    ){
+) {
 //    lvm.shouldEnabled()
+    val userData = lvm.userLiveData.observeAsState()
+    if (userData.value != null) {
+        mContext.startActivity(Intent(mContext, MainScreenActivity::class.java))
+    }
     Box(
         modifier = Modifier
             .fillMaxSize(1f)
@@ -101,7 +106,7 @@ fun LoginPage(
             )
         )
 
-        Spacer(modifier = Modifier.padding(ButtonDefaults.IconSpacing+20.dp))
+        Spacer(modifier = Modifier.padding(ButtonDefaults.IconSpacing + 20.dp))
 
         OutlinedTextField(modifier = Modifier
             .fillMaxWidth()
@@ -197,20 +202,14 @@ fun LoginPage(
             color = Color.Red,
         )
 
-        Spacer(modifier = Modifier.padding(ButtonDefaults.IconSpacing+20.dp))
+        Spacer(modifier = Modifier.padding(ButtonDefaults.IconSpacing + 20.dp))
         Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
             Button(
                 onClick = {
-//                          lvm.newLogin()
                     lvm.login()
-                    lvm.userLiveData.observe(lifecycle, Observer {
-                        if (it != null) {
-                            mContext.startActivity(Intent(mContext, MainScreenActivity::class.java))
-                            lvm.userLiveData.value = null
-                        } else {
-                            Toast.makeText(mContext, "User not found", Toast.LENGTH_SHORT).show()
-                        }
-                    })
+                    if (userData.value == null) {
+                        Toast.makeText(mContext, "User not found", Toast.LENGTH_SHORT).show()
+                    }
                 },
                 shape = RoundedCornerShape(50.dp),
                 enabled = true,
@@ -266,7 +265,7 @@ fun LoginPage(
 fun SignUpPage(
     navController: NavHostController,
     rvm: RegisterViewModel,
-    context : Context = LocalContext.current,
+    context: Context = LocalContext.current,
     focusManager: FocusManager = LocalFocusManager.current,
     keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current,
 ) {
@@ -365,8 +364,12 @@ fun SignUpPage(
             keyboardActions = KeyboardActions(onNext = {
                 focusManager.moveFocus(FocusDirection.Down)
             }),
-            label = { Text(text = "" +
-                    "Username") },
+            label = {
+                Text(
+                    text = "" +
+                            "Username"
+                )
+            },
             placeholder = { Text(text = "Enter your username.") },
             leadingIcon = {
                 Icon(imageVector = Icons.Default.Email, contentDescription = "email")
@@ -503,7 +506,8 @@ fun SignUpPage(
                 onClick = {
                     rvm.register()
                     if (rvm.validate()) {
-                            Toast.makeText(context, "User Registered successfully.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "User Registered successfully.", Toast.LENGTH_SHORT)
+                            .show()
                         navController.navigate(Routes.Login.route)
                     }
                 },
