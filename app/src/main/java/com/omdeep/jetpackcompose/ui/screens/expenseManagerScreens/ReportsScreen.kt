@@ -1,7 +1,6 @@
 package com.omdeep.jetpackcompose.ui.screens.expenseManagerScreens
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -51,7 +50,8 @@ import com.omdeep.jetpackcompose.data.repository.ExpensesRepository
 import com.omdeep.jetpackcompose.data.room.MainDatabase
 import com.omdeep.jetpackcompose.data.room.tables.Earnings
 import com.omdeep.jetpackcompose.data.room.tables.Expenses
-import com.omdeep.jetpackcompose.ui.navigation.ExpenseRoutes
+import com.omdeep.jetpackcompose.ui.screens.CustomTopAppBar
+import com.omdeep.jetpackcompose.ui.screens.NavigateBackOnPress
 import com.omdeep.jetpackcompose.ui.viewModel.EarningsViewModel
 import com.omdeep.jetpackcompose.ui.viewModel.ExpensesViewModel
 import com.omdeep.jetpackcompose.ui.viewModel.ReportViewModel
@@ -305,37 +305,11 @@ fun EarningsReportSelectedMonth(
             .fillMaxWidth(1f)
             .wrapContentHeight(),
         topBar = {
-            TopAppBar(
-                modifier = Modifier
-                    .fillMaxWidth(1f)
-                    .wrapContentHeight(),
-                title = {
-                    Text(
-                        modifier = Modifier
-                            .fillMaxWidth(1f),
-                        text = "Current Month Earnings",
-                        fontSize = 20.sp,
-                        fontStyle = FontStyle.Normal,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White
-                    )
-                },
-                backgroundColor = Color.Blue,
-                contentColor = Color.White,
-                actions = {
-                },
-                navigationIcon = {
-                    IconButton(
-                        onClick = {
-                            navController.navigateUp()
-                        }) {
-                        Icon(
-                            imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = stringResource(id = R.string.back),
-                        )
-                    }
-                }
-            )
+            CustomTopAppBar(title = "Current Month Earnings", navigationIcon = {
+                NavigateBackOnPress(navController)
+            }, actions = {
+
+            })
         }
     ) { it ->
         Column(

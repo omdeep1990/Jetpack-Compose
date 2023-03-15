@@ -68,8 +68,13 @@ fun LoginPage(
 //    lvm.shouldEnabled()
     val userData = lvm.userLiveData.observeAsState()
     if (userData.value != null) {
-        mContext.startActivity(Intent(mContext, MainScreenActivity::class.java))
+        if (userData.value!!.email == lvm.email.value && userData.value!!.password == lvm.password.value) {
+            mContext.startActivity(Intent(mContext, MainScreenActivity::class.java))
+        } else {
+            Toast.makeText(mContext, "User not found", Toast.LENGTH_SHORT).show()
+        }
     }
+
     Box(
         modifier = Modifier
             .fillMaxSize(1f)
@@ -206,10 +211,7 @@ fun LoginPage(
         Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
             Button(
                 onClick = {
-                    lvm.login()
-                    if (userData.value == null) {
-                        Toast.makeText(mContext, "User not found", Toast.LENGTH_SHORT).show()
-                    }
+                        lvm.login()
                 },
                 shape = RoundedCornerShape(50.dp),
                 enabled = true,

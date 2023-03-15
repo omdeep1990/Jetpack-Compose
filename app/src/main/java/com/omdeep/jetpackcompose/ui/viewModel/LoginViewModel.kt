@@ -37,7 +37,7 @@ class LoginViewModel(private val repository: UserRepository) : ViewModel() {
         }
     }
 
-    private fun validate(): Boolean {
+    fun validate(): Boolean {
         val isValidEmail = Valid.isValidEmail(email.value)
         val isValidPassword = Valid.isValidPassword(password.value)
         if (!isValidEmail) {
@@ -61,7 +61,7 @@ class LoginViewModel(private val repository: UserRepository) : ViewModel() {
         reqUser.password = password.value
         if (validate()) {
             getUser(email.value, password.value)
-            clearCredentials()
+//            clearCredentials()
         }
     }
 
