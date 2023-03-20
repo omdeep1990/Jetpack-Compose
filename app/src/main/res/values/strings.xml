@@ -8,4 +8,6 @@
     <string name="title_activity_main_screen">MainScreenActivity</string>
     <string name="title_activity_barcode_analyser">BarcodeAnalyserActivity</string>
     <string name="back">Back Press</string>
+    <string name="title_activity_datastore">DatastoreActivity</string>
+    <string name="data_store">Data Store Screens</string>
 </resources>

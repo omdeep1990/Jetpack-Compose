@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
 import com.omdeep.jetpackcompose.R
 import com.omdeep.jetpackcompose.ui.activity.BarcodeAnalyserActivity
+import com.omdeep.jetpackcompose.ui.activity.DatastoreActivity
 import com.omdeep.jetpackcompose.ui.activity.ExpensesManagerActivity
 import com.omdeep.jetpackcompose.ui.activity.MainActivity
 import kotlinx.coroutines.CoroutineScope
@@ -173,6 +174,33 @@ fun ComposeMainScreen(
             ) {
                 Text(
                     text = "BarCode Analyser",
+                    style = TextStyle(
+                        fontSize = 25.sp,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = FontFamily.Default,
+                        textDecoration = TextDecoration.None,
+                        color = Color.Black,
+                        textAlign = TextAlign.Center
+                    )
+                )
+            }
+            Spacer(modifier = Modifier.padding(ButtonDefaults.IconSpacing))
+
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth(0.95f)
+                    .fillMaxHeight(0.4f)
+//                .weight(1f)
+                    .clickable {
+                        context.startActivity(Intent(context, DatastoreActivity::class.java))
+                    },
+                shape = RoundedCornerShape(10.dp),
+                backgroundColor = Color("#FFE6FFFF".toColorInt()),
+                elevation = 10.dp,
+                contentColor = Color.Black
+            ) {
+                Text(
+                    text = "Jetpack Data Store",
                     style = TextStyle(
                         fontSize = 25.sp,
                         fontWeight = FontWeight.Bold,

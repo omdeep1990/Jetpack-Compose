@@ -1,10 +1,7 @@
 package com.omdeep.jetpackcompose.ui.screens
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
@@ -22,16 +19,15 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun BottomSheetScreen(onCancel: () -> Unit) {
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize(),
-        verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.Start
+        contentAlignment = Alignment.Center
     ) {
         Icon(
             modifier = Modifier
                 .clickable {
-                    onCancel
+                    onCancel()
                 },
             imageVector = Icons.Default.Clear,
             contentDescription = "cancel"

@@ -15,6 +15,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.omdeep.jetpackcompose.R
@@ -63,4 +64,9 @@ fun NavigateBackOnPress(navController: NavHostController) {
 @Composable
 fun MySpacer() {
     Spacer(modifier = Modifier.padding(ButtonDefaults.IconSpacing))
+}
+
+@Composable
+fun CustomSpacer(height : Dp) {
+    Spacer(modifier = Modifier.height(height))
 }
