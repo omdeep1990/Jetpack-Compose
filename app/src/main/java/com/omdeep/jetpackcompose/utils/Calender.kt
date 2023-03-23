@@ -34,6 +34,8 @@ object Calender {
                 date.value = "$mDayOfMonth/${mMonth + 1}/$mYear"
             }, year, month, day
         )
+        //Code for disabling previous dates: -
+//        datePickerDialog.datePicker.minDate = calendar.timeInMillis
         return datePickerDialog
     }
 

@@ -21,14 +21,6 @@ fun HomeScreen(viewModel : ApiViewModel, isLoading : Boolean) {
             .background(colorResource(id = R.color.light_blue))
             .wrapContentSize(Alignment.Center)
     ) {
-//        Text(
-//            text = "Home View",
-//            fontWeight = FontWeight.Bold,
-//            color = Color.White,
-//            modifier = Modifier.align(Alignment.CenterHorizontally),
-//            textAlign = TextAlign.Center,
-//            fontSize = 25.sp
-//        )
         MainActivityLayout(viewModel = viewModel, isLoading = isLoading)
     }
 }
@@ -36,5 +28,4 @@ fun HomeScreen(viewModel : ApiViewModel, isLoading : Boolean) {
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
-//    HomeScreen()
 }

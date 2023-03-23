@@ -1,15 +1,11 @@
 package com.omdeep.jetpackcompose.ui.screens.dataStore
 
 import android.content.Context
-import android.widget.Toast
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
@@ -36,19 +32,18 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.omdeep.jetpackcompose.R
-import com.omdeep.jetpackcompose.data.factory.ExpensesFactory
-import com.omdeep.jetpackcompose.data.repository.ExpensesRepository
-import com.omdeep.jetpackcompose.data.room.MainDatabase
 import com.omdeep.jetpackcompose.ui.screens.CustomTopAppBar
 import com.omdeep.jetpackcompose.ui.screens.NavigateBackOnPress
 import com.omdeep.jetpackcompose.ui.viewModel.DataStoreViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
+import coil.size.Scale
+import coil.transform.CircleCropTransformation
 import com.omdeep.jetpackcompose.data.factory.DataStoreFactory
 import com.omdeep.jetpackcompose.data.repository.DataStoreRepository
 import com.omdeep.jetpackcompose.ui.screens.CustomSpacer
 import com.omdeep.jetpackcompose.ui.screens.MySpacer
-import com.omdeep.jetpackcompose.utils.Calender
-import com.omdeep.jetpackcompose.utils.Constants
+import com.omdeep.jetpackcompose.utils.Constants.PROTO_DATA_STORE
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -59,7 +54,6 @@ fun PreferenceScreen(
     viewModel: DataStoreViewModel = viewModel(factory = DataStoreFactory(DataStoreRepository(context))),
     keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current
 ) {
-
     Scaffold(
         modifier = Modifier
             .fillMaxWidth(1f)
@@ -81,11 +75,27 @@ fun PreferenceScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ) {
+
+            MySpacer()
+
+            Image(
+                painter =
+                rememberAsyncImagePainter(
+                    ImageRequest.Builder(LocalContext.current).data(data = R.drawable.user_profile)
+                        .apply(block = fun ImageRequest.Builder.() {
+                            scale(Scale.FILL)
+                            transformations(CircleCropTransformation())
+                        }).build()
+                ),
+                contentDescription = "profile",
+                modifier = Modifier
+                    .fillMaxHeight()
+            )
             CustomSpacer(height = 20.dp)
             /*Preference data store screen*/
             OutlinedTextField(
                 modifier = Modifier
-                    .fillMaxWidth(0.95f)
+                    .fillMaxWidth(0.9f)
                     .padding(vertical = 10.dp),
                 keyboardOptions = KeyboardOptions.Default.copy(
                     autoCorrect = true,
@@ -127,7 +137,7 @@ fun PreferenceScreen(
             /*Phone number*/
             OutlinedTextField(
                 modifier = Modifier
-                    .fillMaxWidth(0.95f)
+                    .fillMaxWidth(0.9f)
                     .padding(vertical = 10.dp),
                 keyboardOptions = KeyboardOptions.Default.copy(
                     autoCorrect = true,
@@ -169,7 +179,7 @@ fun PreferenceScreen(
             /*Address*/
             OutlinedTextField(
                 modifier = Modifier
-                    .fillMaxWidth(0.95f)
+                    .fillMaxWidth(0.9f)
                     .padding(vertical = 10.dp),
                 keyboardOptions = KeyboardOptions.Default.copy(
                     autoCorrect = true,
@@ -214,6 +224,7 @@ fun PreferenceScreen(
                 Button(
                     onClick = {
                         viewModel.saveData()
+                        navController.navigate(PROTO_DATA_STORE)
                     },
                     shape = RoundedCornerShape(50.dp),
                     enabled = true,
@@ -250,5 +261,47 @@ fun PreferenceScreen(
 
 @Composable
 fun ProtoScreen(navController: NavHostController) {
+    Scaffold(
+        modifier = Modifier
+            .fillMaxWidth(1f)
+            .wrapContentHeight(),
+        topBar = {
+            CustomTopAppBar(title = "Data Store", navigationIcon = {
+                NavigateBackOnPress(navController)
+            }, actions = {
 
+            })
+        }
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth(1f)
+                .fillMaxHeight(1f)
+                .padding(it)
+                .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Top
+        ) {
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth(0.9f)
+                    .wrapContentHeight()
+                    .padding(10.dp),
+                shape = RoundedCornerShape(20.dp),
+                backgroundColor = Color.White,
+                elevation = 10.dp
+            ) {
+                Text(
+                    text = "Preference Data Store coming in future",
+                    style = TextStyle(
+                        fontSize = 30.sp,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = FontFamily.Default,
+                        textDecoration = TextDecoration.None,
+                        color = Color.White
+                    )
+                )
+            }
+        }
+    }
 }

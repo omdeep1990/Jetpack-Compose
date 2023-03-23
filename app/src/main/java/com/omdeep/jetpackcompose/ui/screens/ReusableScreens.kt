@@ -13,6 +13,7 @@ import androidx.compose.material.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
@@ -46,6 +47,17 @@ fun CustomTopAppBar(
             actions = actions,
             navigationIcon = navigationIcon
         )
+}
+
+@Composable
+fun CommonText(text : String) {
+    Text(
+        modifier = Modifier
+            .fillMaxWidth(0.9f),
+        text = buildAnnotatedString {
+            
+        }
+    )
 }
 
 @Composable

@@ -31,9 +31,6 @@ import com.omdeep.jetpackcompose.data.model.movies.MoviesResponse
 @Composable
 fun MovieItem(movie: MoviesResponse) {
     var color by rememberSaveable { mutableStateOf(false) }
-//    var color by rememberSaveable {
-//        mutableStateOf(false)
-//    }
     Card(
         modifier = Modifier
             .padding(8.dp, 4.dp)

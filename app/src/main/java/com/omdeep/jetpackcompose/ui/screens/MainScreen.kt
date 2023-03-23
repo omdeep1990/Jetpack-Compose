@@ -33,7 +33,7 @@ fun MainScreen(viewModel : ApiViewModel, isLoading : Boolean) {
         drawerContent = {
             Drawer(scope = scope, scaffoldState = scaffoldState, navController = navController)
         },
-        backgroundColor = colorResource(id = R.color.light_blue)
+        backgroundColor = colorResource(id = R.color.white)
     ) { padding ->  // We need to pass scaffold's inner padding to content. That's why we use Box.
         Box(modifier = Modifier.padding(padding)) {
             Navigation(navController = navController, viewModel, isLoading)
