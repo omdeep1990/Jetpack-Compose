@@ -1,6 +1,7 @@
 package com.omdeep.jetpackcompose.ui.screens.dataStore
 
 import android.content.Context
+import android.content.res.Configuration
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -9,20 +10,24 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.platform.SoftwareKeyboardController
+import androidx.compose.ui.platform.*
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -44,12 +49,70 @@ import com.omdeep.jetpackcompose.data.repository.DataStoreRepository
 import com.omdeep.jetpackcompose.ui.screens.CustomSpacer
 import com.omdeep.jetpackcompose.ui.screens.MySpacer
 import com.omdeep.jetpackcompose.utils.Constants.PROTO_DATA_STORE
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun PreferenceScreen(
+    navController: NavHostController
+) {
+    val sheetState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden,
+    )
+
+    val showModalSheet = rememberSaveable {
+        mutableStateOf(false)
+    }
+
+    ModalBottomSheetLayout(
+        sheetState = sheetState,
+        sheetContent = { BottomSheetContent() }
+    ) {
+        PreferenceScreenContent(navController, sheetState, showModalSheet)
+    }
+}
+
+@Composable
+fun BottomSheetContent() {
+    Surface(
+        modifier = Modifier.height(300.dp),
+        color = Color(0xff7353ba)
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "Modal Bottom Sheet",
+                fontSize = 20.sp,
+                modifier = Modifier.padding(10.dp),
+                color = Color.White
+            )
+            Divider(
+                modifier = Modifier.padding(5.dp),
+                color = Color.White
+            )
+            Text(
+                text = stringResource(R.string.jetpack_compose_content),
+                fontSize = 15.sp,
+                fontStyle = FontStyle.Italic,
+                color = Color.White,
+                modifier = Modifier.padding(10.dp)
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterialApi::class)
+@Composable
+fun PreferenceScreenContent(
     navController: NavHostController,
+    sheetState: ModalBottomSheetState,
+    showModalSheet: MutableState<Boolean>,
+    scope : CoroutineScope = rememberCoroutineScope(),
     context: Context = LocalContext.current,
+    configuration: Configuration = LocalConfiguration.current,
     focusManager: FocusManager = LocalFocusManager.current,
     viewModel: DataStoreViewModel = viewModel(factory = DataStoreFactory(DataStoreRepository(context))),
     keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current
@@ -89,7 +152,7 @@ fun PreferenceScreen(
                 ),
                 contentDescription = "profile",
                 modifier = Modifier
-                    .fillMaxHeight()
+                    .height(configuration.screenWidthDp.dp/3)
             )
             CustomSpacer(height = 20.dp)
             /*Preference data store screen*/
@@ -112,7 +175,7 @@ fun PreferenceScreen(
                         modifier = Modifier
                             .width(30.dp)
                             .height(30.dp),
-                        painter = painterResource(id = R.drawable.rupee),
+                        painter = painterResource(id = R.drawable.name),
                         contentDescription = "amount"
                     )
                 },
@@ -154,7 +217,7 @@ fun PreferenceScreen(
                         modifier = Modifier
                             .width(30.dp)
                             .height(30.dp),
-                        painter = painterResource(id = R.drawable.rupee),
+                        painter = painterResource(id = R.drawable.telephone),
                         contentDescription = "amount"
                     )
                 },
@@ -170,7 +233,7 @@ fun PreferenceScreen(
                 isError = false,
                 maxLines = 1,
                 singleLine = true,
-                value = viewModel.phone.value!!,
+                value = viewModel.phone.value,
                 onValueChange = {
                     viewModel.phone.value = it
                 })
@@ -197,7 +260,7 @@ fun PreferenceScreen(
                         modifier = Modifier
                             .width(30.dp)
                             .height(30.dp),
-                        painter = painterResource(id = R.drawable.rupee),
+                        painter = painterResource(id = R.drawable.address),
                         contentDescription = "amount"
                     )
                 },
@@ -213,7 +276,7 @@ fun PreferenceScreen(
                 isError = false,
                 maxLines = 1,
                 singleLine = true,
-                value = viewModel.address.value!!,
+                value = viewModel.address.value,
                 onValueChange = {
                     viewModel.address.value = it
                 })
@@ -255,6 +318,22 @@ fun PreferenceScreen(
                     )
                 }
             }
+
+            Box(modifier = Modifier.fillMaxSize()) {
+                Icon(
+                    imageVector = Icons.Default.KeyboardArrowUp,
+                    contentDescription = "",
+                    modifier = Modifier
+                        .align(alignment = Alignment.BottomCenter)
+                        .clickable {
+                            showModalSheet.value = !showModalSheet.value
+                            scope.launch {
+                                sheetState.show()
+                            }
+                        }
+                )
+            }
+
         }
     }
 }

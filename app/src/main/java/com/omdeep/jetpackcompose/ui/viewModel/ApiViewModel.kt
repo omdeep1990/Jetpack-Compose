@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.omdeep.jetpackcompose.data.model.movies.MoviesResponse
+import com.omdeep.jetpackcompose.data.model.popularMovies.PopularMoviesResponse
 import com.omdeep.jetpackcompose.data.repository.ApiRepository
 import com.omdeep.jetpackcompose.utils.Resource
 import kotlinx.coroutines.Dispatchers
@@ -17,10 +18,13 @@ class ApiViewModel : ViewModel(){
     var movies : List<MoviesResponse> by mutableStateOf(listOf())
     var progressBarStatus = MutableLiveData<Resource<List<MoviesResponse>>>()
 
+    var popularMoviesResponse : MutableLiveData<List<PopularMoviesResponse>> = MutableLiveData()
+
     lateinit var clickedItem: MoviesResponse
 
     init {
         getAllEmployees()
+        getPopularMovies()
     }
 
     private fun getAllEmployees() {
@@ -42,6 +46,12 @@ class ApiViewModel : ViewModel(){
             } catch (ex : Exception) {
                 ex.message
             }
+        }
+    }
+
+    private fun getPopularMovies() {
+        ApiRepository.getPopularMovies {
+            popularMoviesResponse.value = it
         }
     }
 

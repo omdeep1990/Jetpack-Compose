@@ -10,4 +10,10 @@
     <string name="back">Back Press</string>
     <string name="title_activity_datastore">DatastoreActivity</string>
     <string name="data_store">Data Store Screens</string>
+    <string name="jetpack_compose_content">Jetpack Compose is a modern UI toolkit that is designed
+        to simplify UI development in Android. It consists of a reactive programming model with
+        conciseness and ease of Kotlin programming language. It is fully declarative so that you can
+        describe your UI by calling some series of functions that will transform your data into a UI
+        hierarchy. When the data changes or is updated then the framework automatically recalls these
+        functions and updates the view for you.</string>
 </resources>

@@ -48,5 +48,7 @@ object Constants {
     val PHONE_NUMBER = stringPreferencesKey("PHONE")
     val address = stringPreferencesKey("ADDRESS")
 
+    const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"
+
 
 }

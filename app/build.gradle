@@ -19,6 +19,8 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField 'String', 'BASE_URL', "\"https://imdb-api.com/API/\""
         buildConfigField 'String', 'API_KEY', "\"k_90mgy9o4\""
+        buildConfigField 'String', 'TMDB_BASE_URL', "\"https://api.themoviedb.org/3/\""
+        buildConfigField 'String', 'TMDB_API_KEY', "\"8f9c8284f8308268d7209afdb219a454\""
         vectorDrawables {
             useSupportLibrary true
         }
@@ -41,7 +43,7 @@ android {
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion '1.2.0'
+        kotlinCompilerExtensionVersion '1.4.4'
     }
     packagingOptions {
         resources {
@@ -52,11 +54,11 @@ android {
 
 dependencies {
     def retrofit_version = "2.9.0"
-    def compose_ui_version = "1.3.3"
+    def compose_ui_version = "1.4.0"
     def lifecycle_version = "2.5.1"
     def firebase_bom_version = "31.2.0"
-    def camerax_version = "1.2.1"
-    def room_version = "2.5.0"
+    def camerax_version = "1.2.2"
+    def room_version = "2.5.1"
 
     implementation("androidx.room:room-runtime:$room_version")
     annotationProcessor("androidx.room:room-compiler:$room_version")
@@ -70,7 +72,7 @@ dependencies {
     implementation "androidx.camera:camera-view:${camerax_version}"
 
     implementation "com.google.accompanist:accompanist-permissions:0.25.1"
-    implementation 'com.google.mlkit:barcode-scanning:17.0.3'
+    implementation 'com.google.mlkit:barcode-scanning:17.1.0'
 
     implementation platform("com.google.firebase:firebase-bom:$firebase_bom_version")
     implementation 'com.google.firebase:firebase-analytics-ktx'
@@ -92,18 +94,21 @@ dependencies {
     implementation ("com.squareup.retrofit2:converter-gson:$retrofit_version")
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2")
 
-    implementation 'androidx.activity:activity-compose:1.6.1'
+    implementation 'androidx.activity:activity-compose:1.7.0'
 
     implementation "androidx.datastore:datastore-preferences:1.0.0"
 
-    implementation "androidx.compose.ui:ui:$compose_ui_version"
-    implementation "androidx.compose.ui:ui-tooling-preview:$compose_ui_version"
-    implementation "androidx.compose.material:material-icons-extended:1.3.1"
+    implementation "androidx.compose.material:material-icons-extended:1.4.0"
+    implementation 'androidx.compose.material:material:1.4.0'
+
     implementation "androidx.navigation:navigation-compose:2.5.3"
-    implementation 'androidx.compose.material:material:1.3.1'
+
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    implementation "androidx.compose.ui:ui:$compose_ui_version"
+    implementation "androidx.compose.ui:ui-tooling-preview:$compose_ui_version"
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_ui_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_ui_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_ui_version"
