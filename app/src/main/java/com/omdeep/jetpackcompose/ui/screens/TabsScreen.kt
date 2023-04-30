@@ -149,3 +149,82 @@ fun TabsContentPreview() {
     val pagerState = rememberPagerState()
     TabsContent(tabs = tabs, pagerState = pagerState)
 }
+
+//import androidx.activity.compose.setContent
+//import androidx.appcompat.app.AppCompatActivity
+//import androidx.compose.runtime.mutableStateOf
+//import androidx.compose.runtime.remember
+//import com.gbksoft.countrycodepickerlib.Country
+
+//class MainActivity : AppCompatActivity() {
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//
+//        setContent {
+//            val selectedCountry = remember { mutableStateOf<Country?>(null) }
+//            Column {
+//                Button(
+//                    onClick = {
+//                        // Show the country picker when the button is clicked
+//                        selectedCountry.value = null
+//                    }
+//                ) {
+//                    Text("Select a country")
+//                }
+//                if (selectedCountry.value != null) {
+//                    CountryPicker { country ->
+//                        selectedCountry.value = country
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}
+
+//import androidx.compose.foundation.layout.*
+//import androidx.compose.foundation.lazy.LazyColumn
+//import androidx.compose.material.Button
+//import androidx.compose.material.Text
+//import androidx.compose.runtime.*
+//import androidx.compose.ui.Modifier
+//import androidx.compose.ui.graphics.Color
+//import androidx.compose.ui.text.font.FontWeight
+//import androidx.compose.ui.unit.dp
+//import com.gbksoft.countrycodepickerlib.Country
+
+//@Composable
+//fun CountryPicker(onCountrySelected: (Country) -> Unit) {
+//    var selectedCountry by remember { mutableStateOf<Country?>(null) }
+//    val countries = remember { Country.getAllCountries() }
+//
+//    LazyColumn {
+//        items(countries) { country ->
+//            Row(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(8.dp)
+//            ) {
+//                Text(
+//                    text = country.name,
+//                    fontWeight = FontWeight.Bold,
+//                    modifier = Modifier.weight(1f)
+//                )
+//                Button(
+//                    onClick = {
+//                        selectedCountry = country
+//                        onCountrySelected(country)
+//                    },
+//                    colors = ButtonDefaults.buttonColors(
+//                        backgroundColor = Color.Transparent
+//                    )
+//                ) {
+//                    Text(
+//                        text = "+${country.phoneCode}",
+//                        fontWeight = FontWeight.Bold,
+//                        color = Color.Black
+//                    )
+//                }
+//            }
+//        }
+//    }
+//}

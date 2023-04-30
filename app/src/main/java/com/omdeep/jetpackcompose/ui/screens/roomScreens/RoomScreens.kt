@@ -50,7 +50,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.*
-import androidx.lifecycle.Observer
 import com.omdeep.jetpackcompose.ui.activity.MainScreenActivity
 import com.omdeep.jetpackcompose.ui.viewModel.RegisterViewModel
 import com.omdeep.jetpackcompose.ui.navigation.Routes

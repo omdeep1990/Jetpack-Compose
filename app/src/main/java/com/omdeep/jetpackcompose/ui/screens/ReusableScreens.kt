@@ -21,9 +21,11 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -59,12 +61,17 @@ fun CustomTopAppBar(
 }
 
 @Composable
-fun CommonText(text : String) {
+fun SetTitle(text : String) {
     Text(
         modifier = Modifier
             .fillMaxWidth(0.9f),
         text = buildAnnotatedString {
-            
+            withStyle(style = SpanStyle(color = Color.Black)) {
+                append(text)
+            }
+            withStyle(style = SpanStyle(color = Color.Red)) {
+                append(" *")
+            }
         }
     )
 }

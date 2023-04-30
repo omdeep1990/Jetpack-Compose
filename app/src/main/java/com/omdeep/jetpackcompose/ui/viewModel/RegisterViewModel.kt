@@ -20,13 +20,13 @@ class RegisterViewModel(private val repository: UserRepository) : ViewModel() {
     var email: MutableState<String> = mutableStateOf(regUser.email)
     var emailErrMsg: MutableState<String> = mutableStateOf("")
 
-
     var password: MutableState<String> = mutableStateOf(regUser.password)
     var passwordErrMsg: MutableState<String> = mutableStateOf("")
 
-
     var confirmPassword: MutableState<String> = mutableStateOf(regUser.confirmPassword)
     var confirmPasswordErrMsg: MutableState<String> = mutableStateOf("")
+
+    var mobileNo : MutableState<String> = mutableStateOf("")
 
     private fun insertUser(user: User) {
         viewModelScope.launch {
