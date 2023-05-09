@@ -13,4 +13,12 @@
     <color name="teal_green">#128C7E</color>
     <color name="message">#75D1FA</color>
     <color name="testing">#91B8F1</color>
+    <color name="light_pink">#F5BBCF</color>
+    <color name="card_color">#FDCDDE</color>
+    <color name="color">#FBDEE9</color>
+    <color name="pink">#FF5722</color>
+    <color name="partial_transparent">#7F000000</color>
+    <color name="background_color">#FFF3F1</color>
+    <color name="drawer_header">#00B5A4</color>
+    <color name="status_bar_color">#F5BBCF</color>
 </resources>

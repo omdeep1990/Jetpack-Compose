@@ -41,7 +41,6 @@ fun YogaScreen(
         factory = RegisterFactory(UserRepository(MainDatabase.getInstance(LocalContext.current).dao))
     )
 ) {
-    val phoneNumber = rememberSaveable { mutableStateOf("") }
     val fullPhoneNumber = rememberSaveable { mutableStateOf("") }
     val onlyPhoneNumber = rememberSaveable { mutableStateOf("") }
     Column(
@@ -66,8 +65,9 @@ fun YogaScreen(
             onValueChange = { viewModel.mobileNo.value = it },
             unfocusedBorderColor = MaterialTheme.colors.primary,
             bottomStyle =false, //  if true the text-field is below the country code selector at the top.
-            shape = RoundedCornerShape(24.dp)
+            shape = RoundedCornerShape(10.dp)
         )
+
         Spacer(modifier = Modifier.height(10.dp))
         Button(onClick = {
             if (!isPhoneNumber()) {
