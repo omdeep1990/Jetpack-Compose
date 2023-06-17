@@ -64,7 +64,6 @@ fun LoginPage(
     focusManager: FocusManager = LocalFocusManager.current,
     keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current,
 ) {
-//    lvm.shouldEnabled()
     val userData = lvm.userLiveData.observeAsState()
     if (userData.value != null) {
         if (userData.value!!.email == lvm.email.value && userData.value!!.password == lvm.password.value) {

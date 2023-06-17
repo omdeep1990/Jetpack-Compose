@@ -141,19 +141,6 @@ fun AboutScreen(viewModel : RegisterViewModel = viewModel(
     factory = RegisterFactory
         (UserRepository(MainDatabase.getInstance(LocalContext.current).dao))
 )) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize(1f),
-        contentAlignment = Alignment.Center
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize(0.3f),
-            contentAlignment = Alignment.Center
-        ) {
-            ProgressIndicator()
-        }
-    }
 
     Column(
         modifier = Modifier
@@ -234,6 +221,20 @@ fun AboutScreen(viewModel : RegisterViewModel = viewModel(
                 ))
         ) {
 
+        }
+
+        Box(
+            modifier = Modifier
+                .fillMaxSize(1f),
+            contentAlignment = Alignment.Center
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize(0.3f),
+                contentAlignment = Alignment.Center
+            ) {
+                ProgressIndicator()
+            }
         }
     }
 
