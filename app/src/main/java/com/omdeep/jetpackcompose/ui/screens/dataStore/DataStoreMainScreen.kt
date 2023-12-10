@@ -10,7 +10,6 @@ import com.omdeep.jetpackcompose.ui.screens.expenseManagerScreens.*
 import com.omdeep.jetpackcompose.utils.Constants.PREF_DATA_STORE
 import com.omdeep.jetpackcompose.utils.Constants.PROTO_DATA_STORE
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun DataStoreMainScreen(
     navController: NavHostController = rememberNavController()

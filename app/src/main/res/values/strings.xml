@@ -16,4 +16,5 @@
         describe your UI by calling some series of functions that will transform your data into a UI
         hierarchy. When the data changes or is updated then the framework automatically recalls these
         functions and updates the view for you.</string>
+    <string name="title_activity_permissions">PermissionsActivity</string>
 </resources>

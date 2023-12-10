@@ -9,7 +9,6 @@ import com.omdeep.jetpackcompose.data.model.NavDrawerItem
 import com.omdeep.jetpackcompose.ui.screens.navBtmTabs.*
 import com.omdeep.jetpackcompose.ui.viewModel.ApiViewModel
 
-@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun Navigation(navController: NavHostController, viewModel : ApiViewModel, isLoading : Boolean) {
     NavHost(navController, startDestination = NavDrawerItem.Home.route) {

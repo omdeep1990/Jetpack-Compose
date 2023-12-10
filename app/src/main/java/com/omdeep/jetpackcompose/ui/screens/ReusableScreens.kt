@@ -765,3 +765,35 @@ fun ButtonPreview() {
         }
     }
 }
+
+@Composable
+fun TitleScreen(
+    title: String,
+    openScreen: () -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth(0.95f)
+            .fillMaxHeight(0.4f)
+            .clickable {
+                openScreen()
+            },
+        shape = RoundedCornerShape(10.dp),
+        backgroundColor = Color("#FFE6FFFF".toColorInt()),
+        elevation = 10.dp,
+        contentColor = Color.Black
+    ) {
+        Text(
+            text = title,
+            style = TextStyle(
+                fontSize = 25.sp,
+                fontWeight = FontWeight.Bold,
+                fontFamily = FontFamily.Default,
+                textDecoration = TextDecoration.None,
+                color = Color.Black,
+                textAlign = TextAlign.Center
+            )
+        )
+    }
+    Spacer(modifier = Modifier.padding(ButtonDefaults.IconSpacing))
+}
